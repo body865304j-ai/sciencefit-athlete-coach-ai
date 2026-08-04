@@ -2,20 +2,15 @@
 @source "../src";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
 /*
- * Design system definition.
+ * ScienceFit Design System
  *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
+ * Color values are the EXACT hex tokens named in the Design Constitution
+ * colour palette. They are intentionally NOT converted to another colour
+ * space: the governance document specifies hex, and re-encoding would
+ * change the delivered values.
  *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ * Dark theme only. No competing accent colours against Champagne Gold.
  */
 
 @theme inline {
@@ -24,8 +19,7 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -45,91 +39,65 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-ring-offset-background: var(--background);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Named Design Constitution tokens */
+  --color-obsidian: var(--obsidian-black);
+  --color-champagne: var(--champagne-gold);
+  --color-warm-white: var(--warm-white);
+  --color-lime: var(--electric-lime);
+  --color-cyan: var(--soft-cyan);
+  --color-muted-gold: var(--muted-gold);
+  --color-charcoal: var(--deep-charcoal);
+  --color-warm-gray: var(--warm-gray);
+
+  --font-sans: var(--font-body);
+  --font-display: var(--font-headline);
+  --font-mono: var(--font-data);
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
-}
+  --radius: 0.5rem;
 
-.dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  /* --- Design Constitution Section 3: Colour Palette (exact hex) --- */
+  --obsidian-black: #030303; /* primary background. NEVER #000000 */
+  --champagne-gold: #d4af37; /* primary accent, CTAs, highlights, map lines */
+  --warm-white: #f5f5f0; /* primary typography. NEVER #ffffff */
+  --electric-lime: #7fff00; /* success accent, confirmed AI decisions */
+  --soft-cyan: #40e0d0; /* information accent, scientific visualisation */
+  --muted-gold: #b8941f; /* secondary accent, hover states */
+  --deep-charcoal: #1a1a1a; /* card backgrounds, elevated surfaces */
+  --warm-gray: #8a8a80; /* secondary text, captions */
+
+  /* --- Design Constitution Section 4: Typography --- */
+  --font-headline: "Inter", -apple-system, "SF Pro Display", system-ui, sans-serif;
+  --font-body: "Inter", -apple-system, system-ui, sans-serif;
+  --font-data: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+
+  /* --- Semantic mapping (dark theme only) --- */
+  --background: var(--obsidian-black);
+  --foreground: var(--warm-white);
+  --card: var(--deep-charcoal);
+  --card-foreground: var(--warm-white);
+  --popover: var(--deep-charcoal);
+  --popover-foreground: var(--warm-white);
+  --primary: var(--champagne-gold);
+  --primary-foreground: var(--obsidian-black);
+  --secondary: #232323;
+  --secondary-foreground: var(--warm-white);
+  --muted: #141414;
+  --muted-foreground: var(--warm-gray);
+  --accent: var(--muted-gold);
+  --accent-foreground: var(--obsidian-black);
+  --destructive: #e0483c;
+  --destructive-foreground: var(--warm-white);
+  --border: #2a2a26;
+  --input: #2a2a26;
+  --ring: var(--champagne-gold);
+
+  --glass-surface: rgb(26 26 26 / 0.72);
+  --glass-border: rgb(212 175 55 / 0.16);
+  --glass-blur: 16px;
+  color-scheme: dark;
 }
 
 @layer base {
@@ -137,8 +105,161 @@
     border-color: var(--color-border);
   }
 
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-body);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
   }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-headline);
+    letter-spacing: -0.02em;
+  }
+
+  /* WCAG 2.1 AA: always-visible keyboard focus indicator */
+  :focus-visible {
+    outline: 2px solid var(--champagne-gold);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: rgb(212 175 55 / 0.3);
+    color: var(--warm-white);
+  }
+}
+
+/* --- Elevated surfaces: glass effect over Deep Charcoal --- */
+@utility glass {
+  background: var(--glass-surface);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+}
+
+/* Tier C removes backdrop blur (CSS animations / minimal compositing only) */
+@utility glass-flat {
+  background: var(--deep-charcoal);
+  border: 1px solid var(--glass-border);
+}
+
+@utility text-data {
+  font-family: var(--font-data);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+/* Minimum 44x44px touch target */
+@utility tap-target {
+  min-inline-size: 44px;
+  min-block-size: 44px;
+}
+
+@utility gold-rule {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--champagne-gold),
+    transparent
+  );
+  block-size: 1px;
+}
+
+/* --- Ambient motion (Design Constitution) --- */
+@keyframes sf-pulse {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.6);
+  }
+}
+
+@keyframes sf-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sf-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, -28px, 0);
+  }
+}
+
+@keyframes sf-signal {
+  0% {
+    stroke-dashoffset: 220;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+/* City pulse: 4s cycle */
+@utility ambient-pulse {
+  animation: sf-pulse 4s ease-in-out infinite;
+}
+
+/* World map slow rotation: 0.1 deg/sec == 3600s per revolution */
+@utility ambient-rotate {
+  animation: sf-rotate 3600s linear infinite;
+}
+
+@utility ambient-drift {
+  animation: sf-drift 14s ease-in-out infinite alternate;
+}
+
+@utility ambient-signal {
+  stroke-dasharray: 220;
+  animation: sf-signal 6s ease-in-out infinite;
+}
+
+/* Honour reduced-motion with static fallbacks */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Tier C: static fallbacks, no ambient compositing */
+:root[data-tier="C"] .ambient-pulse,
+:root[data-tier="C"] .ambient-rotate,
+:root[data-tier="C"] .ambient-drift,
+:root[data-tier="C"] .ambient-signal {
+  animation: none;
+}
+
+:root[data-tier="C"] .glass {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: var(--deep-charcoal);
 }
