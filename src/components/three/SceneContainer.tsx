@@ -6,11 +6,13 @@ import { useDeviceTier } from "@/hooks/useDeviceTier";
 
 export interface SceneContainerProps {
   children: ReactNode;
-  className?: string;
-  camera?: {
-    position: [number, number, number];
-    fov: number;
-  };
+  className?: string | undefined;
+  camera?:
+    | {
+        position: [number, number, number];
+        fov: number;
+      }
+    | undefined;
 }
 
 const DEFAULT_CAMERA: NonNullable<SceneContainerProps["camera"]> = {

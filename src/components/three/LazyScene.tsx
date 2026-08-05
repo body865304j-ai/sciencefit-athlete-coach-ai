@@ -29,14 +29,13 @@ export interface LazySceneProps {
  * hydration and only when the device tier supports it.
  */
 export function LazyAICoreScene({ className }: LazySceneProps) {
-  const { tier, reducedMotion } = useDeviceTier();
+  const { tier } = useDeviceTier();
 
   if (tier === "C") return null;
 
   return (
     <Hydrated>
       <AICoreSceneLazy className={className} />
-      {reducedMotion ? null : null}
     </Hydrated>
   );
 }
