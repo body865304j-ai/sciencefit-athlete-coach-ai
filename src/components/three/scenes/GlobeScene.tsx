@@ -5,7 +5,7 @@ import { useDeviceTier } from "@/hooks/useDeviceTier";
 import type { DeviceTier } from "@/lib/device-tier";
 
 export interface GlobeSceneProps {
-  className?: string;
+  className?: string | undefined;
 }
 
 function GlobeSceneContents({ tier, reducedMotion }: { tier: DeviceTier; reducedMotion: boolean }) {

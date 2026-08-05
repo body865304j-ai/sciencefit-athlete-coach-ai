@@ -5,7 +5,7 @@ import { useDeviceTier } from "@/hooks/useDeviceTier";
 import type { DeviceTier } from "@/lib/device-tier";
 
 export interface AICoreSceneProps {
-  className?: string;
+  className?: string | undefined;
 }
 
 function AICoreSceneContents({ tier, reducedMotion }: { tier: DeviceTier; reducedMotion: boolean }) {

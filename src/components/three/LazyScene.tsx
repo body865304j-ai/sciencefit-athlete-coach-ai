@@ -20,7 +20,7 @@ const AICoreSceneLazy = lazy(() => import("@/components/three/scenes/AICoreScene
 const GlobeSceneLazy = lazy(() => import("@/components/three/scenes/GlobeScene"));
 
 export interface LazySceneProps {
-  className?: string;
+  className?: string | undefined;
 }
 
 /**
