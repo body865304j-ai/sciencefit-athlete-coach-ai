@@ -284,6 +284,76 @@ export type Database = {
           },
         ]
       }
+      coach_performance_scores: {
+        Row: {
+          base_score: number
+          coach_id: string
+          computation_snapshot: Json
+          consistency_bonus: number
+          created_at: string
+          criteria_version_id: string | null
+          evaluation_id: string | null
+          id: string
+          performance_score: number
+          previous_score: number | null
+          submissions_counted: number
+          trend_bonus: number
+          volume_penalty: number
+        }
+        Insert: {
+          base_score: number
+          coach_id: string
+          computation_snapshot: Json
+          consistency_bonus: number
+          created_at?: string
+          criteria_version_id?: string | null
+          evaluation_id?: string | null
+          id?: string
+          performance_score: number
+          previous_score?: number | null
+          submissions_counted: number
+          trend_bonus: number
+          volume_penalty: number
+        }
+        Update: {
+          base_score?: number
+          coach_id?: string
+          computation_snapshot?: Json
+          consistency_bonus?: number
+          created_at?: string
+          criteria_version_id?: string | null
+          evaluation_id?: string | null
+          id?: string
+          performance_score?: number
+          previous_score?: number | null
+          submissions_counted?: number
+          trend_bonus?: number
+          volume_penalty?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "coach_performance_scores_coach_id_fkey"
+            columns: ["coach_id"]
+            isOneToOne: false
+            referencedRelation: "coaches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "coach_performance_scores_criteria_version_id_fkey"
+            columns: ["criteria_version_id"]
+            isOneToOne: false
+            referencedRelation: "evaluation_criteria_versions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "coach_performance_scores_evaluation_id_fkey"
+            columns: ["evaluation_id"]
+            isOneToOne: false
+            referencedRelation: "evaluations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       coaches: {
         Row: {
           created_at: string
@@ -460,6 +530,150 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      events: {
+        Row: {
+          actor_id: string | null
+          event_type: string
+          id: string
+          occurred_at: string
+          payload: Json
+          subject_id: string | null
+          subject_type: string | null
+        }
+        Insert: {
+          actor_id?: string | null
+          event_type: string
+          id?: string
+          occurred_at?: string
+          payload?: Json
+          subject_id?: string | null
+          subject_type?: string | null
+        }
+        Update: {
+          actor_id?: string | null
+          event_type?: string
+          id?: string
+          occurred_at?: string
+          payload?: Json
+          subject_id?: string | null
+          subject_type?: string | null
+        }
+        Relationships: []
+      }
+      events_default: {
+        Row: {
+          actor_id: string | null
+          event_type: string
+          id: string
+          occurred_at: string
+          payload: Json
+          subject_id: string | null
+          subject_type: string | null
+        }
+        Insert: {
+          actor_id?: string | null
+          event_type: string
+          id?: string
+          occurred_at?: string
+          payload?: Json
+          subject_id?: string | null
+          subject_type?: string | null
+        }
+        Update: {
+          actor_id?: string | null
+          event_type?: string
+          id?: string
+          occurred_at?: string
+          payload?: Json
+          subject_id?: string | null
+          subject_type?: string | null
+        }
+        Relationships: []
+      }
+      notification_preferences: {
+        Row: {
+          created_at: string
+          email_enabled: boolean
+          id: string
+          in_app_enabled: boolean
+          muted_categories: string[]
+          push_enabled: boolean
+          quiet_hours_end: number | null
+          quiet_hours_start: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email_enabled?: boolean
+          id?: string
+          in_app_enabled?: boolean
+          muted_categories?: string[]
+          push_enabled?: boolean
+          quiet_hours_end?: number | null
+          quiet_hours_start?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email_enabled?: boolean
+          id?: string
+          in_app_enabled?: boolean
+          muted_categories?: string[]
+          push_enabled?: boolean
+          quiet_hours_end?: number | null
+          quiet_hours_start?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          body: string
+          category: string
+          channel: string
+          created_at: string
+          delivered_at: string | null
+          id: string
+          link_path: string | null
+          metadata: Json
+          read_at: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          category: string
+          channel?: string
+          created_at?: string
+          delivered_at?: string | null
+          id?: string
+          link_path?: string | null
+          metadata?: Json
+          read_at?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          category?: string
+          channel?: string
+          created_at?: string
+          delivered_at?: string | null
+          id?: string
+          link_path?: string | null
+          metadata?: Json
+          read_at?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
@@ -674,6 +888,42 @@ export type Database = {
           },
         ]
       }
+      user_preferences: {
+        Row: {
+          created_at: string
+          device_tier_preference: string | null
+          id: string
+          locale: string
+          reduced_motion: boolean
+          timezone: string
+          units: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_tier_preference?: string | null
+          id?: string
+          locale?: string
+          reduced_motion?: boolean
+          timezone?: string
+          units?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          device_tier_preference?: string | null
+          id?: string
+          locale?: string
+          reduced_motion?: boolean
+          timezone?: string
+          units?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -692,6 +942,111 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      workout_logs: {
+        Row: {
+          athlete_id: string
+          athlete_notes: string | null
+          client_generated_id: string | null
+          completed: boolean
+          created_at: string
+          duration_minutes: number | null
+          id: string
+          perceived_exertion: number | null
+          program_id: string | null
+          session_date: string
+          synced_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          athlete_id: string
+          athlete_notes?: string | null
+          client_generated_id?: string | null
+          completed?: boolean
+          created_at?: string
+          duration_minutes?: number | null
+          id?: string
+          perceived_exertion?: number | null
+          program_id?: string | null
+          session_date: string
+          synced_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          athlete_id?: string
+          athlete_notes?: string | null
+          client_generated_id?: string | null
+          completed?: boolean
+          created_at?: string
+          duration_minutes?: number | null
+          id?: string
+          perceived_exertion?: number | null
+          program_id?: string | null
+          session_date?: string
+          synced_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workout_logs_athlete_id_fkey"
+            columns: ["athlete_id"]
+            isOneToOne: false
+            referencedRelation: "athletes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workout_logs_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "programs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workout_logs_default: {
+        Row: {
+          athlete_id: string
+          athlete_notes: string | null
+          client_generated_id: string | null
+          completed: boolean
+          created_at: string
+          duration_minutes: number | null
+          id: string
+          perceived_exertion: number | null
+          program_id: string | null
+          session_date: string
+          synced_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          athlete_id: string
+          athlete_notes?: string | null
+          client_generated_id?: string | null
+          completed?: boolean
+          created_at?: string
+          duration_minutes?: number | null
+          id?: string
+          perceived_exertion?: number | null
+          program_id?: string | null
+          session_date: string
+          synced_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          athlete_id?: string
+          athlete_notes?: string | null
+          client_generated_id?: string | null
+          completed?: boolean
+          created_at?: string
+          duration_minutes?: number | null
+          id?: string
+          perceived_exertion?: number | null
+          program_id?: string | null
+          session_date?: string
+          synced_at?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
