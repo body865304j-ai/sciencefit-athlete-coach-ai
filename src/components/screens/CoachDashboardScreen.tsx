@@ -44,6 +44,11 @@ function deadlineCountdown(deadlineAt: string | null | undefined) {
   return `${days}d remaining`;
 }
 
+function evaluationsOf<T>(value: T | T[] | null): T[] {
+  if (!value) return [];
+  return Array.isArray(value) ? value : [value];
+}
+
 function programState(program: {
   submitted_at: string | null;
   locked_at: string | null;
@@ -82,7 +87,7 @@ export function CoachDashboardScreen() {
   const pendingReviews = useMemo(
     () =>
       programs.filter((p) =>
-        p.evaluations.some(
+        evaluationsOf(p.evaluations).some(
           (e) =>
             e.status === "QUEUED" ||
             e.status === "RUNNING" ||
@@ -286,7 +291,7 @@ export function CoachDashboardScreen() {
               >
                 <span className="text-foreground">{p.title}</span>
                 <div className="flex flex-wrap items-center gap-2">
-                  {p.evaluations.map((e) => (
+                  {evaluationsOf(p.evaluations).map((e) => (
                     <Badge key={e.id} variant="outline">
                       {e.status}
                       {e.escalation_level !== "NONE" ? ` \u2022 ${e.escalation_level}` : ""}
