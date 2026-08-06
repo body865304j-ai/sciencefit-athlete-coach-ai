@@ -171,7 +171,7 @@ export function RequestWizardScreen() {
       if (current === 0) {
         const result = athleteRequestInput.shape.goal.safeParse(data.goal);
         if (!result.success) {
-          nextErrors.goal =
+          nextErrors['goal'] =
             result.error.issues[0]?.message ?? "Goal is invalid.";
         }
       }
@@ -181,7 +181,7 @@ export function RequestWizardScreen() {
           data.equipment,
         );
         if (!result.success) {
-          nextErrors.equipment =
+          nextErrors['equipment'] =
             result.error.issues[0]?.message ?? "Equipment is invalid.";
         }
       }
@@ -191,7 +191,7 @@ export function RequestWizardScreen() {
           data.experienceLevel,
         );
         if (!result.success) {
-          nextErrors.experienceLevel = "Choose an experience level.";
+          nextErrors['experienceLevel'] = "Choose an experience level.";
         }
       }
 
@@ -200,14 +200,14 @@ export function RequestWizardScreen() {
           data.trainingDays,
         );
         if (!daysResult.success) {
-          nextErrors.trainingDays =
+          nextErrors['trainingDays'] =
             daysResult.error.issues[0]?.message ?? "Invalid training days.";
         }
         const minutesResult = athleteRequestInput.shape.sessionMinutes.safeParse(
           data.sessionMinutes,
         );
         if (!minutesResult.success) {
-          nextErrors.sessionMinutes =
+          nextErrors['sessionMinutes'] =
             minutesResult.error.issues[0]?.message ?? "Invalid session length.";
         }
       }
@@ -217,7 +217,7 @@ export function RequestWizardScreen() {
           data.injuryNotes || null,
         );
         if (!notesResult.success) {
-          nextErrors.injuryNotes =
+          nextErrors['injuryNotes'] =
             notesResult.error.issues[0]?.message ?? "Notes are too long.";
         }
       }
@@ -269,9 +269,9 @@ export function RequestWizardScreen() {
         void navigate({
           to: "/app/challenges/$challengeId",
           params: { challengeId: result.challengeId },
-        });
+        } as unknown as Parameters<typeof navigate>[0]);
       } else {
-        void navigate({ to: "/app" });
+        void navigate({ to: "/app" } as unknown as Parameters<typeof navigate>[0]);
       }
     } catch (error) {
       const message =
