@@ -68,14 +68,14 @@ export function ChallengeResultsScreen({ challengeId }: ChallengeResultsScreenPr
 
   const { challenge, results } = data;
   const rows = results as ResultRow[];
-  const isCompleted = challenge.status === "COMPLETED";
+  const isCompleted = challenge.state === "COMPLETED";
   const winner = rows.find((row) => row.rank === 1);
 
   return (
     <div className="space-y-8">
       <div>
         <h1 className="font-display text-2xl text-foreground">Challenge results</h1>
-        <p className="text-muted-foreground">Status: {challenge.status}</p>
+        <p className="text-muted-foreground">Status: {challenge.state}</p>
       </div>
 
       {isCompleted ? (
