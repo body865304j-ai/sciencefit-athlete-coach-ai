@@ -8,11 +8,13 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
 import { structuredError } from "@/lib/sciencefit.server";
-import {
-  MARKETPLACE_BROWSE_MIN,
-  MARKETPLACE_MESSAGE_MIN,
-  MARKETPLACE_HIRE_MIN,
-} from "@/lib/domain";
+import { MARKETPLACE_GATES } from "@/lib/domain";
+
+/** Normalises a Supabase embedded relation into an array. */
+function many<T>(value: T | T[] | null | undefined): T[] {
+  if (!value) return [];
+  return Array.isArray(value) ? value : [value];
+}
 
 type Client = SupabaseClient<Database>;
 
@@ -149,10 +151,10 @@ export async function loadCoachDashboard(supabase: Client, userId: string) {
   const programs = programsRes.data ?? [];
 
   const evaluated = programs.filter(
-    (p) => (p.evaluations ?? []).some((e) => e.status === "COMPLETED"),
+    (p) => many(p.evaluations).some((e) => e.status === "COMPLETED"),
   );
   const wins = programs.filter((p) =>
-    (p.evaluations ?? []).some((e) => e.rank === 1),
+    many(p.evaluations).some((e) => e.rank === 1),
   ).length;
 
   const rankInfo = await loadCoachRankPosition(coach.id);
@@ -172,7 +174,7 @@ export async function loadCoachDashboard(supabase: Client, userId: string) {
       drafts: programs.filter((p) => p.submitted_at === null).length,
       submitted: programs.filter((p) => p.submitted_at !== null).length,
       awaitingEvaluation: programs.filter((p) =>
-        (p.evaluations ?? []).some(
+        many(p.evaluations).some(
           (e) => e.status === "QUEUED" || e.status === "RUNNING",
         ),
       ).length,
@@ -274,7 +276,7 @@ export async function loadMarketplace(_supabase: Client) {
     .from("coaches")
     .select("id, user_id, performance_score, specializations, verified_at, state")
     .eq("marketplace_enabled", true)
-    .gte("performance_score", MARKETPLACE_BROWSE_MIN)
+    .gte("performance_score", MARKETPLACE_GATES.browse)
     .is("deleted_at", null)
     .order("performance_score", { ascending: false })
     .limit(100);
@@ -290,9 +292,9 @@ export async function loadMarketplace(_supabase: Client) {
 
   return {
     thresholds: {
-      browse: MARKETPLACE_BROWSE_MIN,
-      message: MARKETPLACE_MESSAGE_MIN,
-      hire: MARKETPLACE_HIRE_MIN,
+      browse: MARKETPLACE_GATES.browse,
+      message: MARKETPLACE_GATES.message,
+      hire: MARKETPLACE_GATES.hire,
     },
     coaches: rows.map((row) => {
       const score = Number(row.performance_score);
@@ -304,8 +306,8 @@ export async function loadMarketplace(_supabase: Client) {
         performanceScore: score,
         specializations: row.specializations ?? [],
         verified: row.verified_at !== null,
-        canMessage: score >= MARKETPLACE_MESSAGE_MIN,
-        canHire: score >= MARKETPLACE_HIRE_MIN,
+        canMessage: score >= MARKETPLACE_GATES.message,
+        canHire: score >= MARKETPLACE_GATES.hire,
       };
     }),
   };
