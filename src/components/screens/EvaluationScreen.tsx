@@ -77,7 +77,7 @@ export function EvaluationScreen({ evaluationId }: EvaluationScreenProps) {
 
   const { evaluation } = data;
   const program = evaluation.programs;
-  const results = (evaluation.evaluation_results ?? []) as EvaluationResultRow[];
+  const results = (evaluation.evaluation_results ?? []) as unknown as EvaluationResultRow[];
 
   // Only render the seven canonical dimensions, in the canonical order.
   const dimensionRows = EVALUATION_DIMENSIONS.map((dim) => {
