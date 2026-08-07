@@ -19,6 +19,8 @@ import { Route as AuthenticatedAppProfileRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAppRankingRouteImport } from './routes/_authenticated/app.ranking'
 import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenticated/app.settings'
 import { Route as AuthenticatedAppEvaluationsEvaluationIdRouteImport } from './routes/_authenticated/app.evaluations.$evaluationId'
+import { Route as AuthenticatedAppMarketplaceIndexRouteImport } from './routes/_authenticated/app.marketplace.index'
+import { Route as AuthenticatedAppMarketplaceCoachIdRouteImport } from './routes/_authenticated/app.marketplace.$coachId'
 import { Route as AuthenticatedAppRequestsNewRouteImport } from './routes/_authenticated/app.requests.new'
 import { Route as AuthenticatedAppChallengesChallengeIdIndexRouteImport } from './routes/_authenticated/app.challenges.$challengeId.index'
 import { Route as AuthenticatedAppChallengesChallengeIdBuilderRouteImport } from './routes/_authenticated/app.challenges.$challengeId.builder'
@@ -76,6 +78,18 @@ const AuthenticatedAppEvaluationsEvaluationIdRoute =
     path: '/evaluations/$evaluationId',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
+const AuthenticatedAppMarketplaceIndexRoute =
+  AuthenticatedAppMarketplaceIndexRouteImport.update({
+    id: '/marketplace/',
+    path: '/marketplace/',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppMarketplaceCoachIdRoute =
+  AuthenticatedAppMarketplaceCoachIdRouteImport.update({
+    id: '/marketplace/$coachId',
+    path: '/marketplace/$coachId',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 const AuthenticatedAppRequestsNewRoute =
   AuthenticatedAppRequestsNewRouteImport.update({
     id: '/requests/new',
@@ -111,7 +125,9 @@ export interface FileRoutesByFullPath {
   '/app/settings': typeof AuthenticatedAppSettingsRoute
   '/app/': typeof AuthenticatedAppIndexRoute
   '/app/evaluations/$evaluationId': typeof AuthenticatedAppEvaluationsEvaluationIdRoute
+  '/app/marketplace/$coachId': typeof AuthenticatedAppMarketplaceCoachIdRoute
   '/app/requests/new': typeof AuthenticatedAppRequestsNewRoute
+  '/app/marketplace/': typeof AuthenticatedAppMarketplaceIndexRoute
   '/app/challenges/$challengeId/builder': typeof AuthenticatedAppChallengesChallengeIdBuilderRoute
   '/app/challenges/$challengeId/results': typeof AuthenticatedAppChallengesChallengeIdResultsRoute
   '/app/challenges/$challengeId/': typeof AuthenticatedAppChallengesChallengeIdIndexRoute
@@ -125,7 +141,9 @@ export interface FileRoutesByTo {
   '/app/settings': typeof AuthenticatedAppSettingsRoute
   '/app': typeof AuthenticatedAppIndexRoute
   '/app/evaluations/$evaluationId': typeof AuthenticatedAppEvaluationsEvaluationIdRoute
+  '/app/marketplace/$coachId': typeof AuthenticatedAppMarketplaceCoachIdRoute
   '/app/requests/new': typeof AuthenticatedAppRequestsNewRoute
+  '/app/marketplace': typeof AuthenticatedAppMarketplaceIndexRoute
   '/app/challenges/$challengeId/builder': typeof AuthenticatedAppChallengesChallengeIdBuilderRoute
   '/app/challenges/$challengeId/results': typeof AuthenticatedAppChallengesChallengeIdResultsRoute
   '/app/challenges/$challengeId': typeof AuthenticatedAppChallengesChallengeIdIndexRoute
@@ -142,7 +160,9 @@ export interface FileRoutesById {
   '/_authenticated/app/settings': typeof AuthenticatedAppSettingsRoute
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
   '/_authenticated/app/evaluations/$evaluationId': typeof AuthenticatedAppEvaluationsEvaluationIdRoute
+  '/_authenticated/app/marketplace/$coachId': typeof AuthenticatedAppMarketplaceCoachIdRoute
   '/_authenticated/app/requests/new': typeof AuthenticatedAppRequestsNewRoute
+  '/_authenticated/app/marketplace/': typeof AuthenticatedAppMarketplaceIndexRoute
   '/_authenticated/app/challenges/$challengeId/builder': typeof AuthenticatedAppChallengesChallengeIdBuilderRoute
   '/_authenticated/app/challenges/$challengeId/results': typeof AuthenticatedAppChallengesChallengeIdResultsRoute
   '/_authenticated/app/challenges/$challengeId/': typeof AuthenticatedAppChallengesChallengeIdIndexRoute
@@ -159,7 +179,9 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/app/'
     | '/app/evaluations/$evaluationId'
+    | '/app/marketplace/$coachId'
     | '/app/requests/new'
+    | '/app/marketplace/'
     | '/app/challenges/$challengeId/builder'
     | '/app/challenges/$challengeId/results'
     | '/app/challenges/$challengeId/'
@@ -173,7 +195,9 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/app'
     | '/app/evaluations/$evaluationId'
+    | '/app/marketplace/$coachId'
     | '/app/requests/new'
+    | '/app/marketplace'
     | '/app/challenges/$challengeId/builder'
     | '/app/challenges/$challengeId/results'
     | '/app/challenges/$challengeId'
@@ -189,7 +213,9 @@ export interface FileRouteTypes {
     | '/_authenticated/app/settings'
     | '/_authenticated/app/'
     | '/_authenticated/app/evaluations/$evaluationId'
+    | '/_authenticated/app/marketplace/$coachId'
     | '/_authenticated/app/requests/new'
+    | '/_authenticated/app/marketplace/'
     | '/_authenticated/app/challenges/$challengeId/builder'
     | '/_authenticated/app/challenges/$challengeId/results'
     | '/_authenticated/app/challenges/$challengeId/'
@@ -273,6 +299,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppEvaluationsEvaluationIdRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/marketplace/': {
+      id: '/_authenticated/app/marketplace/'
+      path: '/marketplace'
+      fullPath: '/app/marketplace/'
+      preLoaderRoute: typeof AuthenticatedAppMarketplaceIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/marketplace/$coachId': {
+      id: '/_authenticated/app/marketplace/$coachId'
+      path: '/marketplace/$coachId'
+      fullPath: '/app/marketplace/$coachId'
+      preLoaderRoute: typeof AuthenticatedAppMarketplaceCoachIdRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/requests/new': {
       id: '/_authenticated/app/requests/new'
       path: '/requests/new'
@@ -311,7 +351,9 @@ interface AuthenticatedAppRouteChildren {
   AuthenticatedAppSettingsRoute: typeof AuthenticatedAppSettingsRoute
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
   AuthenticatedAppEvaluationsEvaluationIdRoute: typeof AuthenticatedAppEvaluationsEvaluationIdRoute
+  AuthenticatedAppMarketplaceCoachIdRoute: typeof AuthenticatedAppMarketplaceCoachIdRoute
   AuthenticatedAppRequestsNewRoute: typeof AuthenticatedAppRequestsNewRoute
+  AuthenticatedAppMarketplaceIndexRoute: typeof AuthenticatedAppMarketplaceIndexRoute
   AuthenticatedAppChallengesChallengeIdBuilderRoute: typeof AuthenticatedAppChallengesChallengeIdBuilderRoute
   AuthenticatedAppChallengesChallengeIdResultsRoute: typeof AuthenticatedAppChallengesChallengeIdResultsRoute
   AuthenticatedAppChallengesChallengeIdIndexRoute: typeof AuthenticatedAppChallengesChallengeIdIndexRoute
@@ -325,7 +367,10 @@ const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
   AuthenticatedAppEvaluationsEvaluationIdRoute:
     AuthenticatedAppEvaluationsEvaluationIdRoute,
+  AuthenticatedAppMarketplaceCoachIdRoute:
+    AuthenticatedAppMarketplaceCoachIdRoute,
   AuthenticatedAppRequestsNewRoute: AuthenticatedAppRequestsNewRoute,
+  AuthenticatedAppMarketplaceIndexRoute: AuthenticatedAppMarketplaceIndexRoute,
   AuthenticatedAppChallengesChallengeIdBuilderRoute:
     AuthenticatedAppChallengesChallengeIdBuilderRoute,
   AuthenticatedAppChallengesChallengeIdResultsRoute:
