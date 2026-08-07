@@ -17,6 +17,7 @@ import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedAppNotificationsRouteImport } from './routes/_authenticated/app.notifications'
 import { Route as AuthenticatedAppProfileRouteImport } from './routes/_authenticated/app.profile'
 import { Route as AuthenticatedAppRankingRouteImport } from './routes/_authenticated/app.ranking'
+import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenticated/app.settings'
 import { Route as AuthenticatedAppEvaluationsEvaluationIdRouteImport } from './routes/_authenticated/app.evaluations.$evaluationId'
 import { Route as AuthenticatedAppRequestsNewRouteImport } from './routes/_authenticated/app.requests.new'
 import { Route as AuthenticatedAppChallengesChallengeIdIndexRouteImport } from './routes/_authenticated/app.challenges.$challengeId.index'
@@ -63,6 +64,12 @@ const AuthenticatedAppRankingRoute = AuthenticatedAppRankingRouteImport.update({
   path: '/ranking',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
+const AuthenticatedAppSettingsRoute =
+  AuthenticatedAppSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 const AuthenticatedAppEvaluationsEvaluationIdRoute =
   AuthenticatedAppEvaluationsEvaluationIdRouteImport.update({
     id: '/evaluations/$evaluationId',
@@ -101,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/app/notifications': typeof AuthenticatedAppNotificationsRoute
   '/app/profile': typeof AuthenticatedAppProfileRoute
   '/app/ranking': typeof AuthenticatedAppRankingRoute
+  '/app/settings': typeof AuthenticatedAppSettingsRoute
   '/app/': typeof AuthenticatedAppIndexRoute
   '/app/evaluations/$evaluationId': typeof AuthenticatedAppEvaluationsEvaluationIdRoute
   '/app/requests/new': typeof AuthenticatedAppRequestsNewRoute
@@ -114,6 +122,7 @@ export interface FileRoutesByTo {
   '/app/notifications': typeof AuthenticatedAppNotificationsRoute
   '/app/profile': typeof AuthenticatedAppProfileRoute
   '/app/ranking': typeof AuthenticatedAppRankingRoute
+  '/app/settings': typeof AuthenticatedAppSettingsRoute
   '/app': typeof AuthenticatedAppIndexRoute
   '/app/evaluations/$evaluationId': typeof AuthenticatedAppEvaluationsEvaluationIdRoute
   '/app/requests/new': typeof AuthenticatedAppRequestsNewRoute
@@ -130,6 +139,7 @@ export interface FileRoutesById {
   '/_authenticated/app/notifications': typeof AuthenticatedAppNotificationsRoute
   '/_authenticated/app/profile': typeof AuthenticatedAppProfileRoute
   '/_authenticated/app/ranking': typeof AuthenticatedAppRankingRoute
+  '/_authenticated/app/settings': typeof AuthenticatedAppSettingsRoute
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
   '/_authenticated/app/evaluations/$evaluationId': typeof AuthenticatedAppEvaluationsEvaluationIdRoute
   '/_authenticated/app/requests/new': typeof AuthenticatedAppRequestsNewRoute
@@ -146,6 +156,7 @@ export interface FileRouteTypes {
     | '/app/notifications'
     | '/app/profile'
     | '/app/ranking'
+    | '/app/settings'
     | '/app/'
     | '/app/evaluations/$evaluationId'
     | '/app/requests/new'
@@ -159,6 +170,7 @@ export interface FileRouteTypes {
     | '/app/notifications'
     | '/app/profile'
     | '/app/ranking'
+    | '/app/settings'
     | '/app'
     | '/app/evaluations/$evaluationId'
     | '/app/requests/new'
@@ -174,6 +186,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app/notifications'
     | '/_authenticated/app/profile'
     | '/_authenticated/app/ranking'
+    | '/_authenticated/app/settings'
     | '/_authenticated/app/'
     | '/_authenticated/app/evaluations/$evaluationId'
     | '/_authenticated/app/requests/new'
@@ -246,6 +259,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppRankingRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/settings': {
+      id: '/_authenticated/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AuthenticatedAppSettingsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/evaluations/$evaluationId': {
       id: '/_authenticated/app/evaluations/$evaluationId'
       path: '/evaluations/$evaluationId'
@@ -288,6 +308,7 @@ interface AuthenticatedAppRouteChildren {
   AuthenticatedAppNotificationsRoute: typeof AuthenticatedAppNotificationsRoute
   AuthenticatedAppProfileRoute: typeof AuthenticatedAppProfileRoute
   AuthenticatedAppRankingRoute: typeof AuthenticatedAppRankingRoute
+  AuthenticatedAppSettingsRoute: typeof AuthenticatedAppSettingsRoute
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
   AuthenticatedAppEvaluationsEvaluationIdRoute: typeof AuthenticatedAppEvaluationsEvaluationIdRoute
   AuthenticatedAppRequestsNewRoute: typeof AuthenticatedAppRequestsNewRoute
@@ -300,6 +321,7 @@ const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppNotificationsRoute: AuthenticatedAppNotificationsRoute,
   AuthenticatedAppProfileRoute: AuthenticatedAppProfileRoute,
   AuthenticatedAppRankingRoute: AuthenticatedAppRankingRoute,
+  AuthenticatedAppSettingsRoute: AuthenticatedAppSettingsRoute,
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
   AuthenticatedAppEvaluationsEvaluationIdRoute:
     AuthenticatedAppEvaluationsEvaluationIdRoute,
