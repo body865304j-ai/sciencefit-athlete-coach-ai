@@ -8,6 +8,18 @@ import {
   getMarketplace,
   getNotifications,
 } from "@/lib/app.functions";
+import {
+  getConversations,
+  getHires,
+  getMessages,
+  getMyProfile,
+  getPublicCoachProfile,
+  searchCoaches,
+} from "@/lib/profile.functions";
+import type { MarketplaceFilters } from "@/lib/marketplace-filters";
+
+export type CoachSearchFilters = MarketplaceFilters;
+
 
 /** Shared query definitions so every screen reads from one cache entry. */
 
