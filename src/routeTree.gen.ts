@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
 import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
 import { Route as AuthenticatedAppNotificationsRouteImport } from './routes/_authenticated/app.notifications'
+import { Route as AuthenticatedAppRankingRouteImport } from './routes/_authenticated/app.ranking'
 import { Route as AuthenticatedAppRequestsNewRouteImport } from './routes/_authenticated/app.requests.new'
 
 const IndexRoute = IndexRouteImport.update({
@@ -47,6 +48,11 @@ const AuthenticatedAppNotificationsRoute =
     path: '/notifications',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
+const AuthenticatedAppRankingRoute = AuthenticatedAppRankingRouteImport.update({
+  id: '/ranking',
+  path: '/ranking',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
 const AuthenticatedAppRequestsNewRoute =
   AuthenticatedAppRequestsNewRouteImport.update({
     id: '/requests/new',
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/app': typeof AuthenticatedAppRouteWithChildren
   '/app/notifications': typeof AuthenticatedAppNotificationsRoute
+  '/app/ranking': typeof AuthenticatedAppRankingRoute
   '/app/': typeof AuthenticatedAppIndexRoute
   '/app/requests/new': typeof AuthenticatedAppRequestsNewRoute
 }
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/app/notifications': typeof AuthenticatedAppNotificationsRoute
+  '/app/ranking': typeof AuthenticatedAppRankingRoute
   '/app': typeof AuthenticatedAppIndexRoute
   '/app/requests/new': typeof AuthenticatedAppRequestsNewRoute
 }
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
   '/_authenticated/app/notifications': typeof AuthenticatedAppNotificationsRoute
+  '/_authenticated/app/ranking': typeof AuthenticatedAppRankingRoute
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
   '/_authenticated/app/requests/new': typeof AuthenticatedAppRequestsNewRoute
 }
@@ -86,10 +95,17 @@ export interface FileRouteTypes {
     | '/auth'
     | '/app'
     | '/app/notifications'
+    | '/app/ranking'
     | '/app/'
     | '/app/requests/new'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/app/notifications' | '/app' | '/app/requests/new'
+  to:
+    | '/'
+    | '/auth'
+    | '/app/notifications'
+    | '/app/ranking'
+    | '/app'
+    | '/app/requests/new'
   id:
     | '__root__'
     | '/'
@@ -97,6 +113,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/app'
     | '/_authenticated/app/notifications'
+    | '/_authenticated/app/ranking'
     | '/_authenticated/app/'
     | '/_authenticated/app/requests/new'
   fileRoutesById: FileRoutesById
@@ -151,6 +168,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppNotificationsRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/ranking': {
+      id: '/_authenticated/app/ranking'
+      path: '/ranking'
+      fullPath: '/app/ranking'
+      preLoaderRoute: typeof AuthenticatedAppRankingRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/requests/new': {
       id: '/_authenticated/app/requests/new'
       path: '/requests/new'
@@ -163,12 +187,14 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAppRouteChildren {
   AuthenticatedAppNotificationsRoute: typeof AuthenticatedAppNotificationsRoute
+  AuthenticatedAppRankingRoute: typeof AuthenticatedAppRankingRoute
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
   AuthenticatedAppRequestsNewRoute: typeof AuthenticatedAppRequestsNewRoute
 }
 
 const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppNotificationsRoute: AuthenticatedAppNotificationsRoute,
+  AuthenticatedAppRankingRoute: AuthenticatedAppRankingRoute,
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
   AuthenticatedAppRequestsNewRoute: AuthenticatedAppRequestsNewRoute,
 }
