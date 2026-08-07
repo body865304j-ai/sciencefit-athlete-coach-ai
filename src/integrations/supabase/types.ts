@@ -78,6 +78,8 @@ export type Database = {
           created_at: string
           deleted_at: string | null
           id: string
+          primary_goal: string | null
+          sports: string[]
           state: Database["public"]["Enums"]["athlete_state"]
           updated_at: string
           user_id: string
@@ -86,6 +88,8 @@ export type Database = {
           created_at?: string
           deleted_at?: string | null
           id?: string
+          primary_goal?: string | null
+          sports?: string[]
           state?: Database["public"]["Enums"]["athlete_state"]
           updated_at?: string
           user_id: string
@@ -94,6 +98,8 @@ export type Database = {
           created_at?: string
           deleted_at?: string | null
           id?: string
+          primary_goal?: string | null
+          sports?: string[]
           state?: Database["public"]["Enums"]["athlete_state"]
           updated_at?: string
           user_id?: string
@@ -356,36 +362,48 @@ export type Database = {
       }
       coaches: {
         Row: {
+          bio: string | null
+          certifications: Json
           created_at: string
           deleted_at: string | null
+          experience_years: number
           id: string
           marketplace_enabled: boolean
           performance_score: number | null
           specializations: string[]
+          sports: string[]
           state: Database["public"]["Enums"]["coach_state"]
           updated_at: string
           user_id: string
           verified_at: string | null
         }
         Insert: {
+          bio?: string | null
+          certifications?: Json
           created_at?: string
           deleted_at?: string | null
+          experience_years?: number
           id?: string
           marketplace_enabled?: boolean
           performance_score?: number | null
           specializations?: string[]
+          sports?: string[]
           state?: Database["public"]["Enums"]["coach_state"]
           updated_at?: string
           user_id: string
           verified_at?: string | null
         }
         Update: {
+          bio?: string | null
+          certifications?: Json
           created_at?: string
           deleted_at?: string | null
+          experience_years?: number
           id?: string
           marketplace_enabled?: boolean
           performance_score?: number | null
           specializations?: string[]
+          sports?: string[]
           state?: Database["public"]["Enums"]["coach_state"]
           updated_at?: string
           user_id?: string
@@ -591,6 +609,137 @@ export type Database = {
         }
         Relationships: []
       }
+      marketplace_conversations: {
+        Row: {
+          athlete_id: string
+          coach_id: string
+          created_at: string
+          id: string
+          last_message_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          athlete_id: string
+          coach_id: string
+          created_at?: string
+          id?: string
+          last_message_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          athlete_id?: string
+          coach_id?: string
+          created_at?: string
+          id?: string
+          last_message_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_conversations_athlete_id_fkey"
+            columns: ["athlete_id"]
+            isOneToOne: false
+            referencedRelation: "athletes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_conversations_coach_id_fkey"
+            columns: ["coach_id"]
+            isOneToOne: false
+            referencedRelation: "coaches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_hires: {
+        Row: {
+          athlete_id: string
+          coach_id: string
+          coach_score_at_request: number | null
+          created_at: string
+          goal: string
+          id: string
+          note: string | null
+          responded_at: string | null
+          status: Database["public"]["Enums"]["hire_status"]
+          updated_at: string
+        }
+        Insert: {
+          athlete_id: string
+          coach_id: string
+          coach_score_at_request?: number | null
+          created_at?: string
+          goal: string
+          id?: string
+          note?: string | null
+          responded_at?: string | null
+          status?: Database["public"]["Enums"]["hire_status"]
+          updated_at?: string
+        }
+        Update: {
+          athlete_id?: string
+          coach_id?: string
+          coach_score_at_request?: number | null
+          created_at?: string
+          goal?: string
+          id?: string
+          note?: string | null
+          responded_at?: string | null
+          status?: Database["public"]["Enums"]["hire_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_hires_athlete_id_fkey"
+            columns: ["athlete_id"]
+            isOneToOne: false
+            referencedRelation: "athletes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketplace_hires_coach_id_fkey"
+            columns: ["coach_id"]
+            isOneToOne: false
+            referencedRelation: "coaches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_messages: {
+        Row: {
+          body: string
+          conversation_id: string
+          created_at: string
+          id: string
+          read_at: string | null
+          sender_id: string
+        }
+        Insert: {
+          body: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          sender_id: string
+        }
+        Update: {
+          body?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notification_preferences: {
         Row: {
           created_at: string
@@ -677,30 +826,45 @@ export type Database = {
       }
       profiles: {
         Row: {
+          avatar_url: string | null
+          bio: string | null
           city: string | null
           country: string | null
           created_at: string
           deleted_at: string | null
           display_name: string
+          headline: string | null
           id: string
+          profile_visibility: string
+          show_location: boolean
           updated_at: string
         }
         Insert: {
+          avatar_url?: string | null
+          bio?: string | null
           city?: string | null
           country?: string | null
           created_at?: string
           deleted_at?: string | null
           display_name?: string
+          headline?: string | null
           id: string
+          profile_visibility?: string
+          show_location?: boolean
           updated_at?: string
         }
         Update: {
+          avatar_url?: string | null
+          bio?: string | null
           city?: string | null
           country?: string | null
           created_at?: string
           deleted_at?: string | null
           display_name?: string
+          headline?: string | null
           id?: string
+          profile_visibility?: string
+          show_location?: boolean
           updated_at?: string
         }
         Relationships: []
@@ -1062,6 +1226,9 @@ export type Database = {
         }
         Returns: boolean
       }
+      in_conversation: { Args: { _conversation_id: string }; Returns: boolean }
+      owns_athlete: { Args: { _athlete_id: string }; Returns: boolean }
+      owns_coach: { Args: { _coach_id: string }; Returns: boolean }
     }
     Enums: {
       app_role:
@@ -1118,6 +1285,13 @@ export type Database = {
         | "COMPLETED"
         | "AUTO_REJECTED"
         | "FAILED"
+      hire_status:
+        | "REQUESTED"
+        | "ACCEPTED"
+        | "DECLINED"
+        | "WITHDRAWN"
+        | "ACTIVE"
+        | "COMPLETED"
       match_status:
         | "INVITED"
         | "ACCEPTED"
@@ -1311,6 +1485,14 @@ export const Constants = {
         "COMPLETED",
         "AUTO_REJECTED",
         "FAILED",
+      ],
+      hire_status: [
+        "REQUESTED",
+        "ACCEPTED",
+        "DECLINED",
+        "WITHDRAWN",
+        "ACTIVE",
+        "COMPLETED",
       ],
       match_status: [
         "INVITED",
