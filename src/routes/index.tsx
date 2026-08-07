@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Chapter, ParticleField } from "@/components/landing/ScrollFilm";
 import { WorldMap } from "@/components/landing/WorldMap";
+import { LazyAICoreScene, LazyGlobeScene } from "@/components/three/LazyScene";
 import { useDeviceTier } from "@/hooks/useDeviceTier";
 import { EVALUATION_DIMENSIONS, PERFORMANCE_TIERS } from "@/lib/domain";
 
@@ -70,8 +71,13 @@ function Landing() {
         className="relative flex min-h-dvh items-center overflow-hidden"
       >
         <ParticleField />
+        {/* Tier A/B: real-time globe. Tier C: static CSS/SVG map fallback. */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-[0.55]">
-          <WorldMap className="w-[190%] max-w-none sm:w-[130%] lg:w-[105%]" />
+          {tier === "C" ? (
+            <WorldMap className="w-[190%] max-w-none sm:w-[130%] lg:w-[105%]" />
+          ) : (
+            <LazyGlobeScene className="!absolute inset-0 h-full w-full" />
+          )}
         </div>
         <div className="relative mx-auto w-full max-w-6xl px-5 sm:px-8">
           <p className="text-data text-[0.7rem] uppercase tracking-[0.34em] text-primary">
@@ -131,7 +137,14 @@ function Landing() {
         title="Coaches compete without names."
         body="Identity is cryptographically stripped and replaced with a per-challenge hash before evaluation begins. Reputation cannot buy a better score."
       >
-        <ParticleField />
+        {/* Tier A/B: the abstract AI Core. Tier C: CSS particle fallback. */}
+        {tier === "C" ? (
+          <ParticleField />
+        ) : (
+          <div className="relative h-[42vh] w-full" aria-hidden="true">
+            <LazyAICoreScene className="!absolute inset-0 h-full w-full" />
+          </div>
+        )}
       </Chapter>
 
       <Chapter
