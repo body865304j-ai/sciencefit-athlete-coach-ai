@@ -159,7 +159,7 @@ function BrowseSection() {
   const debouncedQuery = useDebouncedValue(query, 350);
   const [specialization, setSpecialization] = useState<string>("all");
   const [sport, setSport] = useState<string>("all");
-  const [minScore, setMinScore] = useState(MARKETPLACE_GATES.browse);
+  const [minScore, setMinScore] = useState<number>(MARKETPLACE_GATES.browse);
   const [verifiedOnly, setVerifiedOnly] = useState(false);
   const [sort, setSort] = useState<"score" | "experience">("score");
 
@@ -430,7 +430,7 @@ function EngagementsSection() {
   const respond = useServerFn(respondToHire);
   const [busyId, setBusyId] = useState<string | null>(null);
 
-  async function handleRespond(hireId: string, status: Parameters<typeof respond>[0]["data"]["status"]) {
+  async function handleRespond(hireId: string, status: "ACCEPTED" | "DECLINED" | "WITHDRAWN" | "ACTIVE" | "COMPLETED") {
     setBusyId(hireId);
     try {
       await respond({ data: { hireId, status } });
