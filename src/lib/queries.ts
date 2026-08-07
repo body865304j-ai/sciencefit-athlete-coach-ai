@@ -47,3 +47,38 @@ export const accountQuery = queryOptions({
   queryKey: ["account"],
   queryFn: () => getAccount(),
 });
+
+export const myProfileQuery = queryOptions({
+  queryKey: ["my-profile"],
+  queryFn: () => getMyProfile(),
+});
+
+export const coachSearchQuery = (filters: CoachSearchFilters) =>
+  queryOptions({
+    queryKey: ["coach-search", filters],
+    queryFn: () => searchCoaches({ data: filters }),
+  });
+
+export const publicCoachQuery = (coachId: string) =>
+  queryOptions({
+    queryKey: ["public-coach", coachId],
+    queryFn: () => getPublicCoachProfile({ data: { coachId } }),
+  });
+
+export const conversationsQuery = queryOptions({
+  queryKey: ["marketplace-conversations"],
+  queryFn: () => getConversations(),
+});
+
+export const messagesQuery = (conversationId: string) =>
+  queryOptions({
+    queryKey: ["marketplace-messages", conversationId],
+    queryFn: () => getMessages({ data: { conversationId } }),
+    refetchInterval: 20_000,
+  });
+
+export const hiresQuery = queryOptions({
+  queryKey: ["marketplace-hires"],
+  queryFn: () => getHires(),
+});
+
