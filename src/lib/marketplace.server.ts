@@ -19,7 +19,8 @@ async function admin() {
   return supabaseAdmin;
 }
 
-export interface MarketplaceFilters {
+export type { MarketplaceFilters } from "@/lib/marketplace-filters";
+interface _UnusedFilters {
   query?: string | undefined;
   specialization?: string | undefined;
   sport?: string | undefined;
