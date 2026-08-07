@@ -16,6 +16,7 @@ import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/ap
 import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
 import { Route as AuthenticatedAppNotificationsRouteImport } from './routes/_authenticated/app.notifications'
 import { Route as AuthenticatedAppRankingRouteImport } from './routes/_authenticated/app.ranking'
+import { Route as AuthenticatedAppEvaluationsEvaluationIdRouteImport } from './routes/_authenticated/app.evaluations.$evaluationId'
 import { Route as AuthenticatedAppRequestsNewRouteImport } from './routes/_authenticated/app.requests.new'
 import { Route as AuthenticatedAppChallengesChallengeIdIndexRouteImport } from './routes/_authenticated/app.challenges.$challengeId.index'
 import { Route as AuthenticatedAppChallengesChallengeIdBuilderRouteImport } from './routes/_authenticated/app.challenges.$challengeId.builder'
@@ -56,6 +57,12 @@ const AuthenticatedAppRankingRoute = AuthenticatedAppRankingRouteImport.update({
   path: '/ranking',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
+const AuthenticatedAppEvaluationsEvaluationIdRoute =
+  AuthenticatedAppEvaluationsEvaluationIdRouteImport.update({
+    id: '/evaluations/$evaluationId',
+    path: '/evaluations/$evaluationId',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 const AuthenticatedAppRequestsNewRoute =
   AuthenticatedAppRequestsNewRouteImport.update({
     id: '/requests/new',
@@ -88,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/app/notifications': typeof AuthenticatedAppNotificationsRoute
   '/app/ranking': typeof AuthenticatedAppRankingRoute
   '/app/': typeof AuthenticatedAppIndexRoute
+  '/app/evaluations/$evaluationId': typeof AuthenticatedAppEvaluationsEvaluationIdRoute
   '/app/requests/new': typeof AuthenticatedAppRequestsNewRoute
   '/app/challenges/$challengeId/builder': typeof AuthenticatedAppChallengesChallengeIdBuilderRoute
   '/app/challenges/$challengeId/results': typeof AuthenticatedAppChallengesChallengeIdResultsRoute
@@ -99,6 +107,7 @@ export interface FileRoutesByTo {
   '/app/notifications': typeof AuthenticatedAppNotificationsRoute
   '/app/ranking': typeof AuthenticatedAppRankingRoute
   '/app': typeof AuthenticatedAppIndexRoute
+  '/app/evaluations/$evaluationId': typeof AuthenticatedAppEvaluationsEvaluationIdRoute
   '/app/requests/new': typeof AuthenticatedAppRequestsNewRoute
   '/app/challenges/$challengeId/builder': typeof AuthenticatedAppChallengesChallengeIdBuilderRoute
   '/app/challenges/$challengeId/results': typeof AuthenticatedAppChallengesChallengeIdResultsRoute
@@ -113,6 +122,7 @@ export interface FileRoutesById {
   '/_authenticated/app/notifications': typeof AuthenticatedAppNotificationsRoute
   '/_authenticated/app/ranking': typeof AuthenticatedAppRankingRoute
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
+  '/_authenticated/app/evaluations/$evaluationId': typeof AuthenticatedAppEvaluationsEvaluationIdRoute
   '/_authenticated/app/requests/new': typeof AuthenticatedAppRequestsNewRoute
   '/_authenticated/app/challenges/$challengeId/builder': typeof AuthenticatedAppChallengesChallengeIdBuilderRoute
   '/_authenticated/app/challenges/$challengeId/results': typeof AuthenticatedAppChallengesChallengeIdResultsRoute
@@ -127,6 +137,7 @@ export interface FileRouteTypes {
     | '/app/notifications'
     | '/app/ranking'
     | '/app/'
+    | '/app/evaluations/$evaluationId'
     | '/app/requests/new'
     | '/app/challenges/$challengeId/builder'
     | '/app/challenges/$challengeId/results'
@@ -138,6 +149,7 @@ export interface FileRouteTypes {
     | '/app/notifications'
     | '/app/ranking'
     | '/app'
+    | '/app/evaluations/$evaluationId'
     | '/app/requests/new'
     | '/app/challenges/$challengeId/builder'
     | '/app/challenges/$challengeId/results'
@@ -151,6 +163,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app/notifications'
     | '/_authenticated/app/ranking'
     | '/_authenticated/app/'
+    | '/_authenticated/app/evaluations/$evaluationId'
     | '/_authenticated/app/requests/new'
     | '/_authenticated/app/challenges/$challengeId/builder'
     | '/_authenticated/app/challenges/$challengeId/results'
@@ -214,6 +227,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppRankingRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/evaluations/$evaluationId': {
+      id: '/_authenticated/app/evaluations/$evaluationId'
+      path: '/evaluations/$evaluationId'
+      fullPath: '/app/evaluations/$evaluationId'
+      preLoaderRoute: typeof AuthenticatedAppEvaluationsEvaluationIdRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/requests/new': {
       id: '/_authenticated/app/requests/new'
       path: '/requests/new'
@@ -249,6 +269,7 @@ interface AuthenticatedAppRouteChildren {
   AuthenticatedAppNotificationsRoute: typeof AuthenticatedAppNotificationsRoute
   AuthenticatedAppRankingRoute: typeof AuthenticatedAppRankingRoute
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
+  AuthenticatedAppEvaluationsEvaluationIdRoute: typeof AuthenticatedAppEvaluationsEvaluationIdRoute
   AuthenticatedAppRequestsNewRoute: typeof AuthenticatedAppRequestsNewRoute
   AuthenticatedAppChallengesChallengeIdBuilderRoute: typeof AuthenticatedAppChallengesChallengeIdBuilderRoute
   AuthenticatedAppChallengesChallengeIdResultsRoute: typeof AuthenticatedAppChallengesChallengeIdResultsRoute
@@ -259,6 +280,8 @@ const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppNotificationsRoute: AuthenticatedAppNotificationsRoute,
   AuthenticatedAppRankingRoute: AuthenticatedAppRankingRoute,
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
+  AuthenticatedAppEvaluationsEvaluationIdRoute:
+    AuthenticatedAppEvaluationsEvaluationIdRoute,
   AuthenticatedAppRequestsNewRoute: AuthenticatedAppRequestsNewRoute,
   AuthenticatedAppChallengesChallengeIdBuilderRoute:
     AuthenticatedAppChallengesChallengeIdBuilderRoute,
