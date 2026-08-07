@@ -19,15 +19,9 @@ async function admin() {
   return supabaseAdmin;
 }
 
-export type { MarketplaceFilters } from "@/lib/marketplace-filters";
-interface _UnusedFilters {
-  query?: string | undefined;
-  specialization?: string | undefined;
-  sport?: string | undefined;
-  minScore?: number | undefined;
-  verifiedOnly?: boolean | undefined;
-  sort?: "score" | "experience" | undefined;
-}
+import type { MarketplaceFilters } from "@/lib/marketplace-filters";
+export type { MarketplaceFilters };
+
 
 /** Coach discovery. Only public, marketplace-enabled coaches above the browse gate. */
 export async function searchCoaches(filters: MarketplaceFilters) {
