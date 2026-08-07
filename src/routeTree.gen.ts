@@ -17,6 +17,7 @@ import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedAppNotificationsRouteImport } from './routes/_authenticated/app.notifications'
 import { Route as AuthenticatedAppRankingRouteImport } from './routes/_authenticated/app.ranking'
 import { Route as AuthenticatedAppRequestsNewRouteImport } from './routes/_authenticated/app.requests.new'
+import { Route as AuthenticatedAppChallengesChallengeIdIndexRouteImport } from './routes/_authenticated/app.challenges.$challengeId.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -59,6 +60,12 @@ const AuthenticatedAppRequestsNewRoute =
     path: '/requests/new',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
+const AuthenticatedAppChallengesChallengeIdIndexRoute =
+  AuthenticatedAppChallengesChallengeIdIndexRouteImport.update({
+    id: '/challenges/$challengeId/',
+    path: '/challenges/$challengeId/',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -68,6 +75,7 @@ export interface FileRoutesByFullPath {
   '/app/ranking': typeof AuthenticatedAppRankingRoute
   '/app/': typeof AuthenticatedAppIndexRoute
   '/app/requests/new': typeof AuthenticatedAppRequestsNewRoute
+  '/app/challenges/$challengeId/': typeof AuthenticatedAppChallengesChallengeIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -76,6 +84,7 @@ export interface FileRoutesByTo {
   '/app/ranking': typeof AuthenticatedAppRankingRoute
   '/app': typeof AuthenticatedAppIndexRoute
   '/app/requests/new': typeof AuthenticatedAppRequestsNewRoute
+  '/app/challenges/$challengeId': typeof AuthenticatedAppChallengesChallengeIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -87,6 +96,7 @@ export interface FileRoutesById {
   '/_authenticated/app/ranking': typeof AuthenticatedAppRankingRoute
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
   '/_authenticated/app/requests/new': typeof AuthenticatedAppRequestsNewRoute
+  '/_authenticated/app/challenges/$challengeId/': typeof AuthenticatedAppChallengesChallengeIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/app/ranking'
     | '/app/'
     | '/app/requests/new'
+    | '/app/challenges/$challengeId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/app/ranking'
     | '/app'
     | '/app/requests/new'
+    | '/app/challenges/$challengeId'
   id:
     | '__root__'
     | '/'
@@ -116,6 +128,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app/ranking'
     | '/_authenticated/app/'
     | '/_authenticated/app/requests/new'
+    | '/_authenticated/app/challenges/$challengeId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -182,6 +195,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppRequestsNewRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/challenges/$challengeId/': {
+      id: '/_authenticated/app/challenges/$challengeId/'
+      path: '/challenges/$challengeId'
+      fullPath: '/app/challenges/$challengeId/'
+      preLoaderRoute: typeof AuthenticatedAppChallengesChallengeIdIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
   }
 }
 
@@ -190,6 +210,7 @@ interface AuthenticatedAppRouteChildren {
   AuthenticatedAppRankingRoute: typeof AuthenticatedAppRankingRoute
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
   AuthenticatedAppRequestsNewRoute: typeof AuthenticatedAppRequestsNewRoute
+  AuthenticatedAppChallengesChallengeIdIndexRoute: typeof AuthenticatedAppChallengesChallengeIdIndexRoute
 }
 
 const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
@@ -197,6 +218,8 @@ const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppRankingRoute: AuthenticatedAppRankingRoute,
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
   AuthenticatedAppRequestsNewRoute: AuthenticatedAppRequestsNewRoute,
+  AuthenticatedAppChallengesChallengeIdIndexRoute:
+    AuthenticatedAppChallengesChallengeIdIndexRoute,
 }
 
 const AuthenticatedAppRouteWithChildren =
