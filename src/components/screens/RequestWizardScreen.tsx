@@ -13,10 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createRequest } from "@/lib/flow.functions";
-import {
-  athleteRequestInput,
-  type AthleteRequestInput,
-} from "@/lib/schemas";
+import { athleteRequestInput, type AthleteRequestInput } from "@/lib/schemas";
 import {
   CHALLENGE_RULES,
   REQUEST_DRAFT_AUTOSAVE_SECONDS,
@@ -171,43 +168,35 @@ export function RequestWizardScreen() {
       if (current === 0) {
         const result = athleteRequestInput.shape.goal.safeParse(data.goal);
         if (!result.success) {
-          nextErrors['goal'] =
-            result.error.issues[0]?.message ?? "Goal is invalid.";
+          nextErrors["goal"] = result.error.issues[0]?.message ?? "Goal is invalid.";
         }
       }
 
       if (current === 1) {
-        const result = athleteRequestInput.shape.equipment.safeParse(
-          data.equipment,
-        );
+        const result = athleteRequestInput.shape.equipment.safeParse(data.equipment);
         if (!result.success) {
-          nextErrors['equipment'] =
-            result.error.issues[0]?.message ?? "Equipment is invalid.";
+          nextErrors["equipment"] = result.error.issues[0]?.message ?? "Equipment is invalid.";
         }
       }
 
       if (current === 2) {
-        const result = athleteRequestInput.shape.experienceLevel.safeParse(
-          data.experienceLevel,
-        );
+        const result = athleteRequestInput.shape.experienceLevel.safeParse(data.experienceLevel);
         if (!result.success) {
-          nextErrors['experienceLevel'] = "Choose an experience level.";
+          nextErrors["experienceLevel"] = "Choose an experience level.";
         }
       }
 
       if (current === 3) {
-        const daysResult = athleteRequestInput.shape.trainingDays.safeParse(
-          data.trainingDays,
-        );
+        const daysResult = athleteRequestInput.shape.trainingDays.safeParse(data.trainingDays);
         if (!daysResult.success) {
-          nextErrors['trainingDays'] =
+          nextErrors["trainingDays"] =
             daysResult.error.issues[0]?.message ?? "Invalid training days.";
         }
         const minutesResult = athleteRequestInput.shape.sessionMinutes.safeParse(
           data.sessionMinutes,
         );
         if (!minutesResult.success) {
-          nextErrors['sessionMinutes'] =
+          nextErrors["sessionMinutes"] =
             minutesResult.error.issues[0]?.message ?? "Invalid session length.";
         }
       }
@@ -217,8 +206,7 @@ export function RequestWizardScreen() {
           data.injuryNotes || null,
         );
         if (!notesResult.success) {
-          nextErrors['injuryNotes'] =
-            notesResult.error.issues[0]?.message ?? "Notes are too long.";
+          nextErrors["injuryNotes"] = notesResult.error.issues[0]?.message ?? "Notes are too long.";
         }
       }
 
@@ -274,8 +262,7 @@ export function RequestWizardScreen() {
         void navigate({ to: "/app" } as unknown as Parameters<typeof navigate>[0]);
       }
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Failed to submit request.";
+      const message = error instanceof Error ? error.message : "Failed to submit request.";
       setSubmitError(message);
       toast.error(message);
       setStep(6); // stay on the review step
@@ -322,9 +309,7 @@ export function RequestWizardScreen() {
 
   return (
     <section className="mx-auto flex w-full max-w-2xl flex-col gap-6 px-4 py-8 sm:px-6">
-      <h1 className="font-display text-2xl font-semibold text-foreground">
-        New Athlete Request
-      </h1>
+      <h1 className="font-display text-2xl font-semibold text-foreground">New Athlete Request</h1>
 
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between text-sm text-muted-foreground">
@@ -359,19 +344,17 @@ export function RequestWizardScreen() {
                 id="goal"
                 value={data.goal}
                 onChange={(e) => patch({ goal: e.target.value })}
-                aria-describedby={errors['goal'] ? "goal-error" : undefined}
-                aria-invalid={Boolean(errors['goal'])}
+                aria-describedby={errors["goal"] ? "goal-error" : undefined}
+                aria-invalid={Boolean(errors["goal"])}
                 placeholder="e.g. Build strength for a powerlifting meet in 12 weeks"
                 minLength={3}
                 maxLength={200}
                 rows={4}
               />
-              <p className="text-xs text-muted-foreground">
-                {data.goal.length}/200 characters
-              </p>
-              {errors['goal'] && (
+              <p className="text-xs text-muted-foreground">{data.goal.length}/200 characters</p>
+              {errors["goal"] && (
                 <p id="goal-error" role="alert" className="text-sm text-destructive">
-                  {errors['goal']}
+                  {errors["goal"]}
                 </p>
               )}
             </div>
@@ -380,9 +363,7 @@ export function RequestWizardScreen() {
           {step === 1 && (
             <div className="flex flex-col gap-4">
               <fieldset className="flex flex-col gap-2">
-                <legend className="text-sm font-medium text-foreground">
-                  Available equipment
-                </legend>
+                <legend className="text-sm font-medium text-foreground">Available equipment</legend>
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   {COMMON_EQUIPMENT.map((item) => {
                     const checkboxId = `equipment-${item.replace(/\s+/g, "-").toLowerCase()}`;
@@ -419,7 +400,7 @@ export function RequestWizardScreen() {
                     }}
                     maxLength={60}
                     placeholder="e.g. TRX straps"
-                    aria-describedby={errors['equipment'] ? "equipment-error" : undefined}
+                    aria-describedby={errors["equipment"] ? "equipment-error" : undefined}
                   />
                   <Button type="button" variant="secondary" onClick={addEquipment}>
                     Add
@@ -441,9 +422,9 @@ export function RequestWizardScreen() {
                     ))}
                   </ul>
                 )}
-                {errors['equipment'] && (
+                {errors["equipment"] && (
                   <p id="equipment-error" role="alert" className="text-sm text-destructive">
-                    {errors['equipment']}
+                    {errors["equipment"]}
                   </p>
                 )}
               </div>
@@ -452,33 +433,26 @@ export function RequestWizardScreen() {
 
           {step === 2 && (
             <fieldset className="flex flex-col gap-2">
-              <legend className="text-sm font-medium text-foreground">
-                Experience level
-              </legend>
+              <legend className="text-sm font-medium text-foreground">Experience level</legend>
               <RadioGroup
                 value={data.experienceLevel}
                 onValueChange={(value) =>
                   patch({ experienceLevel: value as WizardData["experienceLevel"] })
                 }
-                aria-describedby={
-                  errors['experienceLevel'] ? "experience-error" : undefined
-                }
+                aria-describedby={errors["experienceLevel"] ? "experience-error" : undefined}
               >
                 {EXPERIENCE_LEVELS.map((level) => (
                   <div key={level.value} className="flex items-center gap-2">
-                    <RadioGroupItem
-                      id={`experience-${level.value}`}
-                      value={level.value}
-                    />
+                    <RadioGroupItem id={`experience-${level.value}`} value={level.value} />
                     <Label htmlFor={`experience-${level.value}`} className="font-normal">
                       {level.label}
                     </Label>
                   </div>
                 ))}
               </RadioGroup>
-              {errors['experienceLevel'] && (
+              {errors["experienceLevel"] && (
                 <p id="experience-error" role="alert" className="text-sm text-destructive">
-                  {errors['experienceLevel']}
+                  {errors["experienceLevel"]}
                 </p>
               )}
             </fieldset>
@@ -494,21 +468,13 @@ export function RequestWizardScreen() {
                   min={1}
                   max={7}
                   value={data.trainingDays}
-                  onChange={(e) =>
-                    patch({ trainingDays: Number(e.target.value) || 0 })
-                  }
-                  aria-describedby={
-                    errors['trainingDays'] ? "training-days-error" : undefined
-                  }
-                  aria-invalid={Boolean(errors['trainingDays'])}
+                  onChange={(e) => patch({ trainingDays: Number(e.target.value) || 0 })}
+                  aria-describedby={errors["trainingDays"] ? "training-days-error" : undefined}
+                  aria-invalid={Boolean(errors["trainingDays"])}
                 />
-                {errors['trainingDays'] && (
-                  <p
-                    id="training-days-error"
-                    role="alert"
-                    className="text-sm text-destructive"
-                  >
-                    {errors['trainingDays']}
+                {errors["trainingDays"] && (
+                  <p id="training-days-error" role="alert" className="text-sm text-destructive">
+                    {errors["trainingDays"]}
                   </p>
                 )}
               </div>
@@ -520,21 +486,13 @@ export function RequestWizardScreen() {
                   min={15}
                   max={240}
                   value={data.sessionMinutes}
-                  onChange={(e) =>
-                    patch({ sessionMinutes: Number(e.target.value) || 0 })
-                  }
-                  aria-describedby={
-                    errors['sessionMinutes'] ? "session-minutes-error" : undefined
-                  }
-                  aria-invalid={Boolean(errors['sessionMinutes'])}
+                  onChange={(e) => patch({ sessionMinutes: Number(e.target.value) || 0 })}
+                  aria-describedby={errors["sessionMinutes"] ? "session-minutes-error" : undefined}
+                  aria-invalid={Boolean(errors["sessionMinutes"])}
                 />
-                {errors['sessionMinutes'] && (
-                  <p
-                    id="session-minutes-error"
-                    role="alert"
-                    className="text-sm text-destructive"
-                  >
-                    {errors['sessionMinutes']}
+                {errors["sessionMinutes"] && (
+                  <p id="session-minutes-error" role="alert" className="text-sm text-destructive">
+                    {errors["sessionMinutes"]}
                   </p>
                 )}
               </div>
@@ -544,40 +502,29 @@ export function RequestWizardScreen() {
           {step === 4 && (
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-2">
-                <Label htmlFor="injury-notes">
-                  Injury or health restrictions (optional)
-                </Label>
+                <Label htmlFor="injury-notes">Injury or health restrictions (optional)</Label>
                 <Textarea
                   id="injury-notes"
                   value={data.injuryNotes}
                   onChange={(e) => patch({ injuryNotes: e.target.value })}
                   maxLength={1000}
                   rows={4}
-                  aria-describedby={
-                    errors['injuryNotes'] ? "injury-notes-error" : undefined
-                  }
+                  aria-describedby={errors["injuryNotes"] ? "injury-notes-error" : undefined}
                 />
                 <p className="text-xs text-muted-foreground">
                   {data.injuryNotes.length}/1000 characters
                 </p>
-                {errors['injuryNotes'] && (
-                  <p
-                    id="injury-notes-error"
-                    role="alert"
-                    className="text-sm text-destructive"
-                  >
-                    {errors['injuryNotes']}
+                {errors["injuryNotes"] && (
+                  <p id="injury-notes-error" role="alert" className="text-sm text-destructive">
+                    {errors["injuryNotes"]}
                   </p>
                 )}
               </div>
               <div className="flex items-center justify-between gap-4 rounded-md border border-border p-3">
                 <div className="flex flex-col gap-1">
-                  <Label htmlFor="clinical-flag">
-                    I have a clinical / medical condition
-                  </Label>
+                  <Label htmlFor="clinical-flag">I have a clinical / medical condition</Label>
                   <p className="text-xs text-muted-foreground">
-                    Flags your request for mandatory medical review before a
-                    coach programs it.
+                    Flags your request for mandatory medical review before a coach programs it.
                   </p>
                 </div>
                 <Switch
@@ -598,10 +545,7 @@ export function RequestWizardScreen() {
                 </h3>
                 <ul className="flex flex-col gap-3">
                   {CHALLENGE_RULES.map((rule) => (
-                    <li
-                      key={rule.rule}
-                      className="rounded-md border border-border p-3 text-sm"
-                    >
+                    <li key={rule.rule} className="rounded-md border border-border p-3 text-sm">
                       <p className="font-medium text-foreground">{rule.rule}</p>
                       <p className="text-muted-foreground">{rule.description}</p>
                     </li>
@@ -610,9 +554,8 @@ export function RequestWizardScreen() {
               </div>
               <div className="rounded-md border border-border p-3 text-sm text-muted-foreground">
                 <p>
-                  Your draft autosaves every {REQUEST_DRAFT_AUTOSAVE_SECONDS}{" "}
-                  seconds and is kept for up to {REQUEST_DRAFT_EXPIRY_DAYS} days if
-                  you leave before submitting.
+                  Your draft autosaves every {REQUEST_DRAFT_AUTOSAVE_SECONDS} seconds and is kept
+                  for up to {REQUEST_DRAFT_EXPIRY_DAYS} days if you leave before submitting.
                 </p>
               </div>
             </div>
@@ -629,8 +572,8 @@ export function RequestWizardScreen() {
               <SummaryRow
                 label="Experience level"
                 value={
-                  EXPERIENCE_LEVELS.find((l) => l.value === data.experienceLevel)
-                    ?.label ?? "Not set"
+                  EXPERIENCE_LEVELS.find((l) => l.value === data.experienceLevel)?.label ??
+                  "Not set"
                 }
                 onEdit={() => goTo(2)}
               />
@@ -660,8 +603,8 @@ export function RequestWizardScreen() {
           {step === 7 && (
             <div className="flex flex-col gap-4" aria-live="polite">
               <p className="text-sm text-muted-foreground">
-                Ready to submit your request. This creates exactly one
-                challenge for eligible coaches.
+                Ready to submit your request. This creates exactly one challenge for eligible
+                coaches.
               </p>
               {submitError && (
                 <p role="alert" className="text-sm text-destructive">
@@ -712,9 +655,7 @@ function SummaryRow({
   return (
     <div className="flex items-start justify-between gap-4 rounded-md border border-border p-3">
       <div className="flex flex-col gap-1">
-        <p className="text-xs font-medium uppercase tracking-wide text-warm-gray">
-          {label}
-        </p>
+        <p className="text-xs font-medium uppercase tracking-wide text-warm-gray">{label}</p>
         <p className="text-sm text-foreground">{value}</p>
       </div>
       <Button type="button" variant="ghost" size="sm" onClick={onEdit}>

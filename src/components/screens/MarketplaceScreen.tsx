@@ -4,20 +4,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { z } from "zod";
-import {
-  BadgeCheck,
-  MessageSquare,
-  Search,
-  Send,
-  ShieldCheck,
-  Users,
-} from "lucide-react";
-import {
-  coachSearchQuery,
-  conversationsQuery,
-  hiresQuery,
-  messagesQuery,
-} from "@/lib/queries";
+import { BadgeCheck, MessageSquare, Search, Send, ShieldCheck, Users } from "lucide-react";
+import { coachSearchQuery, conversationsQuery, hiresQuery, messagesQuery } from "@/lib/queries";
 import { sendMessage, respondToHire } from "@/lib/profile.functions";
 import type { MarketplaceFilters } from "@/lib/marketplace-filters";
 import { MARKETPLACE_GATES, performanceTier } from "@/lib/domain";
@@ -37,13 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const messageSchema = z.object({
   body: z.string().trim().min(1, "Write a message first.").max(2000),
@@ -269,9 +251,7 @@ function BrowseSection() {
       {!isPending && !isError && coaches.length === 0 && (
         <div className="glass rounded-lg p-10 text-center">
           <Users className="mx-auto size-6 text-warm-gray" aria-hidden="true" />
-          <p className="mt-3 text-sm text-muted-foreground">
-            No coaches match these filters.
-          </p>
+          <p className="mt-3 text-sm text-muted-foreground">No coaches match these filters.</p>
         </div>
       )}
 
@@ -394,9 +374,7 @@ function ConversationsSection() {
                   : "hover:bg-muted"
               }`}
             >
-              <p className="truncate font-medium text-foreground">
-                {conversation.counterpartName}
-              </p>
+              <p className="truncate font-medium text-foreground">{conversation.counterpartName}</p>
               <p className="text-data mt-1 text-xs text-warm-gray">
                 {formatWhen(conversation.lastMessageAt)}
               </p>
@@ -430,7 +408,10 @@ function EngagementsSection() {
   const respond = useServerFn(respondToHire);
   const [busyId, setBusyId] = useState<string | null>(null);
 
-  async function handleRespond(hireId: string, status: "ACCEPTED" | "DECLINED" | "WITHDRAWN" | "ACTIVE" | "COMPLETED") {
+  async function handleRespond(
+    hireId: string,
+    status: "ACCEPTED" | "DECLINED" | "WITHDRAWN" | "ACTIVE" | "COMPLETED",
+  ) {
     setBusyId(hireId);
     try {
       await respond({ data: { hireId, status } });
@@ -476,7 +457,11 @@ function EngagementsSection() {
             <div className="mt-3 flex flex-wrap gap-2">
               {isCoach && hire.status === "REQUESTED" && (
                 <>
-                  <Button size="sm" disabled={busy} onClick={() => void handleRespond(hire.hireId, "ACCEPTED")}>
+                  <Button
+                    size="sm"
+                    disabled={busy}
+                    onClick={() => void handleRespond(hire.hireId, "ACCEPTED")}
+                  >
                     Accept
                   </Button>
                   <Button
@@ -490,12 +475,20 @@ function EngagementsSection() {
                 </>
               )}
               {isCoach && hire.status === "ACCEPTED" && (
-                <Button size="sm" disabled={busy} onClick={() => void handleRespond(hire.hireId, "ACTIVE")}>
+                <Button
+                  size="sm"
+                  disabled={busy}
+                  onClick={() => void handleRespond(hire.hireId, "ACTIVE")}
+                >
                   Activate
                 </Button>
               )}
               {isCoach && hire.status === "ACTIVE" && (
-                <Button size="sm" disabled={busy} onClick={() => void handleRespond(hire.hireId, "COMPLETED")}>
+                <Button
+                  size="sm"
+                  disabled={busy}
+                  onClick={() => void handleRespond(hire.hireId, "COMPLETED")}
+                >
                   Complete
                 </Button>
               )}
@@ -510,7 +503,11 @@ function EngagementsSection() {
                 </Button>
               )}
               {!isCoach && hire.status === "ACTIVE" && (
-                <Button size="sm" disabled={busy} onClick={() => void handleRespond(hire.hireId, "COMPLETED")}>
+                <Button
+                  size="sm"
+                  disabled={busy}
+                  onClick={() => void handleRespond(hire.hireId, "COMPLETED")}
+                >
                   Complete
                 </Button>
               )}

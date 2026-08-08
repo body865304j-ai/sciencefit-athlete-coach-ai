@@ -8,10 +8,7 @@
  * per-challenge hash before anything reaches the evaluation engine.
  * Reverse lookup is impossible without the challenge-scoped salt.
  */
-export async function anonymousHash(
-  challengeSalt: string,
-  coachId: string,
-): Promise<string> {
+export async function anonymousHash(challengeSalt: string, coachId: string): Promise<string> {
   const bytes = new TextEncoder().encode(`${challengeSalt}:${coachId}`);
   const digest = await crypto.subtle.digest("SHA-256", bytes);
   return Array.from(new Uint8Array(digest))
@@ -23,10 +20,7 @@ export async function anonymousHash(
  * Strips every coach-identifying attribute from a submission before it is
  * handed to the evaluation engine (Security Layer 7).
  */
-export function anonymizeSubmission<T extends Record<string, unknown>>(
-  program: T,
-  hash: string,
-) {
+export function anonymizeSubmission<T extends Record<string, unknown>>(program: T, hash: string) {
   const {
     coach_id: _coachId,
     created_at: _createdAt,
@@ -56,9 +50,7 @@ export interface RankedEvaluation extends RankableEvaluation {
  *   3) Earlier submission timestamp wins
  *   4) Co-winners if still tied
  */
-export function rankWithTieBreakers(
-  rows: RankableEvaluation[],
-): RankedEvaluation[] {
+export function rankWithTieBreakers(rows: RankableEvaluation[]): RankedEvaluation[] {
   const num = (v: number | null) => (v === null ? -Infinity : v);
   const time = (v: string | null) => (v === null ? Infinity : Date.parse(v));
 

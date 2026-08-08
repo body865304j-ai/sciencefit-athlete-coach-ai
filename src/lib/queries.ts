@@ -20,7 +20,6 @@ import type { MarketplaceFilters } from "@/lib/marketplace-filters";
 
 export type CoachSearchFilters = MarketplaceFilters;
 
-
 /** Shared query definitions so every screen reads from one cache entry. */
 
 export const viewerQuery = queryOptions({
@@ -93,4 +92,3 @@ export const hiresQuery = queryOptions({
   queryKey: ["marketplace-hires"],
   queryFn: () => getHires(),
 });
-

@@ -27,7 +27,12 @@ interface ResultRow {
   rank: number | null;
   coWinner: boolean;
   anonymous_hash: string;
-  programs: { id: string; title: string; summary: string | null; submitted_at: string | null } | null;
+  programs: {
+    id: string;
+    title: string;
+    summary: string | null;
+    submitted_at: string | null;
+  } | null;
   evaluation_results: { dimension: string; score: number }[];
 }
 
@@ -100,16 +105,16 @@ export function ChallengeResultsScreen({ challengeId }: ChallengeResultsScreenPr
         )
       ) : (
         <p className="text-muted-foreground">
-          This challenge is not yet completed; the leaderboard below reflects evaluations
-          received so far and ranks may still change.
+          This challenge is not yet completed; the leaderboard below reflects evaluations received
+          so far and ranks may still change.
         </p>
       )}
 
       <section>
         <h2 className="mb-3 font-display text-xl text-foreground">Ranked leaderboard</h2>
         <p className="mb-3 text-sm text-muted-foreground">
-          Ties are broken, in order: higher Safety score, then higher Personalization score,
-          then earlier submission timestamp; remaining ties are marked as co-winners.
+          Ties are broken, in order: higher Safety score, then higher Personalization score, then
+          earlier submission timestamp; remaining ties are marked as co-winners.
         </p>
         {rows.length === 0 ? (
           <p className="text-muted-foreground">No submissions have been evaluated yet.</p>

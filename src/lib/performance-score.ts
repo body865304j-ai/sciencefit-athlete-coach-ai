@@ -11,11 +11,7 @@
  * (AI Evaluation Engine 12.2 "Auditable").
  */
 
-export type ChallengeDifficulty =
-  | "beginner"
-  | "intermediate"
-  | "advanced"
-  | "elite";
+export type ChallengeDifficulty = "beginner" | "intermediate" | "advanced" | "elite";
 
 /** AI Evaluation Engine 12.1 — difficulty weights D. */
 export const DIFFICULTY_WEIGHTS: Record<ChallengeDifficulty, number> = {
@@ -27,8 +23,8 @@ export const DIFFICULTY_WEIGHTS: Record<ChallengeDifficulty, number> = {
 
 /** AI Evaluation Engine 12.1 — recency decay weights, most recent first. */
 export const RECENCY_WEIGHTS = [
-  1.0, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5, 0.5, 0.5, 0.5,
-  0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
+  1.0, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
+  0.5, 0.5,
 ] as const;
 
 export const MAX_HISTORY_WINDOW = 20;
@@ -81,8 +77,7 @@ export function standardDeviation(values: number[]): number {
   const n = values.length;
   if (n === 0) return 0;
   const mean = values.reduce((sum, v) => sum + v, 0) / n;
-  const variance =
-    values.reduce((sum, v) => sum + (v - mean) ** 2, 0) / n;
+  const variance = values.reduce((sum, v) => sum + (v - mean) ** 2, 0) / n;
   return Math.sqrt(variance);
 }
 
@@ -138,9 +133,7 @@ export function computePerformanceScore(
     .reverse();
   const slope = linearRegressionSlope(trendScores);
 
-  const consistencyScores = window
-    .slice(0, CONSISTENCY_WINDOW)
-    .map((entry) => entry.score);
+  const consistencyScores = window.slice(0, CONSISTENCY_WINDOW).map((entry) => entry.score);
   const stdDev = standardDeviation(consistencyScores);
 
   const trend = trendBonus(slope);

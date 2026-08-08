@@ -22,7 +22,6 @@ async function admin() {
 import type { MarketplaceFilters } from "@/lib/marketplace-filters";
 export type { MarketplaceFilters };
 
-
 /** Coach discovery. Only public, marketplace-enabled coaches above the browse gate. */
 export async function searchCoaches(filters: MarketplaceFilters) {
   const db = await admin();
@@ -54,7 +53,9 @@ export async function searchCoaches(filters: MarketplaceFilters) {
   const { data: profiles } = rows.length
     ? await db
         .from("profiles")
-        .select("id, display_name, country, city, headline, avatar_url, profile_visibility, show_location")
+        .select(
+          "id, display_name, country, city, headline, avatar_url, profile_visibility, show_location",
+        )
         .in(
           "id",
           rows.map((r) => r.user_id),
@@ -81,9 +82,7 @@ export async function searchCoaches(filters: MarketplaceFilters) {
           specializations: row.specializations ?? [],
           sports: row.sports ?? [],
           experienceYears: row.experience_years,
-          certificationCount: Array.isArray(row.certifications)
-            ? row.certifications.length
-            : 0,
+          certificationCount: Array.isArray(row.certifications) ? row.certifications.length : 0,
           verified: row.verified_at !== null,
           canMessage: score >= MARKETPLACE_GATES.message,
           canHire: score >= MARKETPLACE_GATES.hire,
@@ -116,11 +115,7 @@ export async function searchCoaches(filters: MarketplaceFilters) {
 }
 
 async function requireAthlete(supabase: Client, userId: string) {
-  const { data } = await supabase
-    .from("athletes")
-    .select("id")
-    .eq("user_id", userId)
-    .maybeSingle();
+  const { data } = await supabase.from("athletes").select("id").eq("user_id", userId).maybeSingle();
   if (!data)
     throw structuredError(
       "ATHLETE_PROFILE_REQUIRED",
@@ -144,11 +139,7 @@ async function coachGate(coachId: string) {
 }
 
 /** Opens (or reuses) a conversation. Requires the coach to clear the message gate. */
-export async function openConversation(
-  supabase: Client,
-  userId: string,
-  coachId: string,
-) {
+export async function openConversation(supabase: Client, userId: string, coachId: string) {
   const athleteId = await requireAthlete(supabase, userId);
   const coach = await coachGate(coachId);
   if (coach.score < MARKETPLACE_GATES.message)
@@ -193,8 +184,20 @@ export async function loadConversations(supabase: Client, userId: string) {
 
   const db = await admin();
   const [{ data: coaches }, { data: athletes }] = await Promise.all([
-    db.from("coaches").select("id, user_id").in("id", rows.map((r) => r.coach_id)),
-    db.from("athletes").select("id, user_id").in("id", rows.map((r) => r.athlete_id)),
+    db
+      .from("coaches")
+      .select("id, user_id")
+      .in(
+        "id",
+        rows.map((r) => r.coach_id),
+      ),
+    db
+      .from("athletes")
+      .select("id, user_id")
+      .in(
+        "id",
+        rows.map((r) => r.athlete_id),
+      ),
   ]);
   const userIds = [
     ...(coaches ?? []).map((c) => c.user_id),
@@ -228,10 +231,7 @@ export async function loadConversations(supabase: Client, userId: string) {
   };
 }
 
-export async function loadMessages(
-  supabase: Client,
-  conversationId: string,
-) {
+export async function loadMessages(supabase: Client, conversationId: string) {
   const { data, error } = await supabase
     .from("marketplace_messages")
     .select("id, sender_id, body, created_at, read_at")
@@ -324,7 +324,10 @@ export async function requestHire(
 export async function respondToHire(
   supabase: Client,
   userId: string,
-  input: { hireId: string; status: Extract<HireStatus, "ACCEPTED" | "DECLINED" | "WITHDRAWN" | "ACTIVE" | "COMPLETED"> },
+  input: {
+    hireId: string;
+    status: Extract<HireStatus, "ACCEPTED" | "DECLINED" | "WITHDRAWN" | "ACTIVE" | "COMPLETED">;
+  },
 ) {
   const [{ data: athlete }, { data: coach }] = await Promise.all([
     supabase.from("athletes").select("id").eq("user_id", userId).maybeSingle(),
@@ -365,7 +368,9 @@ export async function respondToHire(
 export async function loadHires(supabase: Client, userId: string) {
   const { data: hires } = await supabase
     .from("marketplace_hires")
-    .select("id, athlete_id, coach_id, goal, note, status, created_at, responded_at, coach_score_at_request")
+    .select(
+      "id, athlete_id, coach_id, goal, note, status, created_at, responded_at, coach_score_at_request",
+    )
     .order("created_at", { ascending: false })
     .limit(100);
 
@@ -374,8 +379,20 @@ export async function loadHires(supabase: Client, userId: string) {
 
   const db = await admin();
   const [{ data: coaches }, { data: athletes }] = await Promise.all([
-    db.from("coaches").select("id, user_id").in("id", rows.map((r) => r.coach_id)),
-    db.from("athletes").select("id, user_id").in("id", rows.map((r) => r.athlete_id)),
+    db
+      .from("coaches")
+      .select("id, user_id")
+      .in(
+        "id",
+        rows.map((r) => r.coach_id),
+      ),
+    db
+      .from("athletes")
+      .select("id, user_id")
+      .in(
+        "id",
+        rows.map((r) => r.athlete_id),
+      ),
   ]);
   const { data: profiles } = await db
     .from("profiles")

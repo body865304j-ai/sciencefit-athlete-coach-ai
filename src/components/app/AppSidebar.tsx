@@ -68,10 +68,7 @@ export function AppSidebar({ isAthlete }: { isAthlete: boolean }) {
   return (
     <Sidebar collapsible="icon" className="border-border">
       <SidebarHeader className="px-3 py-4">
-        <Link
-          to="/"
-          className="text-data text-[0.65rem] uppercase tracking-[0.3em] text-primary"
-        >
+        <Link to="/" className="text-data text-[0.65rem] uppercase tracking-[0.3em] text-primary">
           {collapsed ? "SF" : "ScienceFit"}
         </Link>
       </SidebarHeader>

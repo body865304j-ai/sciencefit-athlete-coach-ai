@@ -45,11 +45,7 @@ export function useScrubProgress<T extends HTMLElement>() {
 }
 
 export type ChapterTransition =
-  | "morph"
-  | "dissolve"
-  | "particle-flow"
-  | "scale-shift"
-  | "color-transition";
+  "morph" | "dissolve" | "particle-flow" | "scale-shift" | "color-transition";
 
 interface ChapterProps {
   id: string;
@@ -109,9 +105,7 @@ export function Chapter({
       <div className="mx-auto w-full max-w-6xl px-5 py-24 sm:px-8">
         <div style={style} className="max-w-2xl">
           <p className="text-data text-[0.7rem] uppercase tracking-[0.34em] text-primary">
-            <span aria-hidden="true">
-              {String(index).padStart(2, "0")} &mdash;{" "}
-            </span>
+            <span aria-hidden="true">{String(index).padStart(2, "0")} &mdash; </span>
             {eyebrow}
           </p>
           <h2
@@ -145,7 +139,7 @@ export function ParticleField() {
           style={{
             left: `${(index * 37) % 100}%`,
             top: `${(index * 53) % 100}%`,
-            opacity: 0.18 + ((index % 5) * 0.08),
+            opacity: 0.18 + (index % 5) * 0.08,
             animationDelay: `${(index % 7) * 1.3}s`,
           }}
         />

@@ -265,16 +265,10 @@ export function ProfileScreen() {
     coach?.specializations ?? [],
   );
   const [coachSports, setCoachSports] = useState<string[]>(coach?.sports ?? []);
-  const [experienceYears, setExperienceYears] = useState(
-    String(coach?.experience_years ?? 0),
-  );
-  const [certifications, setCertifications] = useState(
-    coach?.certifications ?? [],
-  );
+  const [experienceYears, setExperienceYears] = useState(String(coach?.experience_years ?? 0));
+  const [certifications, setCertifications] = useState(coach?.certifications ?? []);
   const [coachBio, setCoachBio] = useState(coach?.bio ?? "");
-  const [marketplaceEnabled, setMarketplaceEnabled] = useState(
-    coach?.marketplace_enabled ?? false,
-  );
+  const [marketplaceEnabled, setMarketplaceEnabled] = useState(coach?.marketplace_enabled ?? false);
 
   const detailsMutation = useMutation({
     mutationFn: async () => {
@@ -602,7 +596,10 @@ export function ProfileScreen() {
               <Label>Certifications</Label>
               <div className="mt-2 space-y-3">
                 {certifications.map((cert, index) => (
-                  <div key={index} className="grid grid-cols-1 gap-2 sm:grid-cols-[1fr_1fr_auto_auto]">
+                  <div
+                    key={index}
+                    className="grid grid-cols-1 gap-2 sm:grid-cols-[1fr_1fr_auto_auto]"
+                  >
                     <Input
                       aria-label="Certification name"
                       placeholder="Name"
@@ -685,10 +682,7 @@ export function ProfileScreen() {
             <Stat label="Submissions" value={data.coachStats.submissions} />
             <Stat label="Evaluated" value={data.coachStats.evaluated} />
             <Stat label="Wins" value={data.coachStats.wins} />
-            <Stat
-              label="Success rate"
-              value={`${data.coachStats.successRate}%`}
-            />
+            <Stat label="Success rate" value={`${data.coachStats.successRate}%`} />
           </div>
 
           {data.performanceHistory.length > 0 && (

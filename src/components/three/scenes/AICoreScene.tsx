@@ -8,7 +8,13 @@ export interface AICoreSceneProps {
   className?: string | undefined;
 }
 
-function AICoreSceneContents({ tier, reducedMotion }: { tier: DeviceTier; reducedMotion: boolean }) {
+function AICoreSceneContents({
+  tier,
+  reducedMotion,
+}: {
+  tier: DeviceTier;
+  reducedMotion: boolean;
+}) {
   return (
     <>
       <ambientLight intensity={0.4} />

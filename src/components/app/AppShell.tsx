@@ -40,10 +40,7 @@ const SEGMENT_LABELS: Record<string, string> = {
 };
 
 function label(segment: string) {
-  return (
-    SEGMENT_LABELS[segment] ??
-    (segment.length > 12 ? `${segment.slice(0, 8)}…` : segment)
-  );
+  return SEGMENT_LABELS[segment] ?? (segment.length > 12 ? `${segment.slice(0, 8)}…` : segment);
 }
 
 function Breadcrumbs() {
@@ -51,10 +48,7 @@ function Breadcrumbs() {
     select: (router) => router.location.pathname,
   });
 
-  const segments = useMemo(
-    () => pathname.split("/").filter(Boolean),
-    [pathname],
-  );
+  const segments = useMemo(() => pathname.split("/").filter(Boolean), [pathname]);
 
   return (
     <Breadcrumb>
@@ -112,11 +106,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             <div className="flex flex-1 items-center justify-end gap-1 sm:flex-none">
               <Link
                 to="/app/notifications"
-                aria-label={
-                  unread > 0
-                    ? `Notifications, ${unread} unread`
-                    : "Notifications"
-                }
+                aria-label={unread > 0 ? `Notifications, ${unread} unread` : "Notifications"}
                 className="relative inline-flex size-10 items-center justify-center rounded-md text-foreground transition-colors hover:bg-secondary"
               >
                 <Bell className="size-4" aria-hidden="true" />
@@ -138,9 +128,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuLabel className="truncate">
-                    {displayName}
-                  </DropdownMenuLabel>
+                  <DropdownMenuLabel className="truncate">{displayName}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link to="/app/profile">

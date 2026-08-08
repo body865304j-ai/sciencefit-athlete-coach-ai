@@ -67,9 +67,7 @@ function AuthPage() {
         if (error) throw error;
       }
     } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Authentication failed.",
-      );
+      toast.error(error instanceof Error ? error.message : "Authentication failed.");
     } finally {
       setBusy(false);
     }
@@ -78,10 +76,7 @@ function AuthPage() {
   return (
     <main className="flex min-h-dvh items-center justify-center bg-background px-5 py-16">
       <div className="glass w-full max-w-md rounded-xl p-8">
-        <Link
-          to="/"
-          className="text-data text-[0.7rem] uppercase tracking-[0.34em] text-primary"
-        >
+        <Link to="/" className="text-data text-[0.7rem] uppercase tracking-[0.34em] text-primary">
           ScienceFit
         </Link>
         <h1 className="mt-6 font-display text-3xl font-light text-foreground">
@@ -95,10 +90,7 @@ function AuthPage() {
 
         <form onSubmit={onSubmit} className="mt-8 space-y-5" noValidate>
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-foreground"
-            >
+            <label htmlFor="email" className="block text-sm font-medium text-foreground">
               Email
             </label>
             <input
@@ -112,18 +104,13 @@ function AuthPage() {
             />
           </div>
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-foreground"
-            >
+            <label htmlFor="password" className="block text-sm font-medium text-foreground">
               Password
             </label>
             <input
               id="password"
               type="password"
-              autoComplete={
-                mode === "signin" ? "current-password" : "new-password"
-              }
+              autoComplete={mode === "signin" ? "current-password" : "new-password"}
               required
               minLength={8}
               value={password}
@@ -136,11 +123,7 @@ function AuthPage() {
             disabled={busy}
             className="tap-target w-full rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:bg-accent disabled:opacity-60"
           >
-            {busy
-              ? "Working\u2026"
-              : mode === "signin"
-                ? "Sign in"
-                : "Create account"}
+            {busy ? "Working\u2026" : mode === "signin" ? "Sign in" : "Create account"}
           </button>
         </form>
 
@@ -149,9 +132,7 @@ function AuthPage() {
           onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
           className="tap-target mt-6 w-full text-sm text-warm-gray underline-offset-4 hover:text-foreground hover:underline"
         >
-          {mode === "signin"
-            ? "No account yet? Create one"
-            : "Already have an account? Sign in"}
+          {mode === "signin" ? "No account yet? Create one" : "Already have an account? Sign in"}
         </button>
       </div>
     </main>

@@ -55,10 +55,7 @@ export async function loadViewer(supabase: Client, userId: string) {
 
 export async function assignRole(userId: string, role: "athlete" | "coach") {
   const db = await admin();
-  await db.from("user_roles").upsert(
-    { user_id: userId, role },
-    { onConflict: "user_id,role" },
-  );
+  await db.from("user_roles").upsert({ user_id: userId, role }, { onConflict: "user_id,role" });
 
   if (role === "athlete") {
     await db
@@ -66,10 +63,9 @@ export async function assignRole(userId: string, role: "athlete" | "coach") {
       .upsert({ user_id: userId, state: "ACTIVE" }, { onConflict: "user_id" });
   } else {
     // A new coach starts at PENDING_VERIFICATION per the Coach Lifecycle.
-    await db.from("coaches").upsert(
-      { user_id: userId, state: "PENDING_VERIFICATION" },
-      { onConflict: "user_id" },
-    );
+    await db
+      .from("coaches")
+      .upsert({ user_id: userId, state: "PENDING_VERIFICATION" }, { onConflict: "user_id" });
   }
   return { ok: true };
 }
@@ -111,10 +107,7 @@ export async function submitAthleteRequest(
   if (error || !request)
     throw structuredError("REQUEST_CREATE_FAILED", error?.message ?? "Unknown");
 
-  await db
-    .from("athletes")
-    .update({ state: "REQUEST_PENDING" })
-    .eq("id", athlete.id);
+  await db.from("athletes").update({ state: "REQUEST_PENDING" }).eq("id", athlete.id);
 
   // Step 2: AI Validates Request (integration seam - see sciencefit.server.ts)
   const outcome = await validateAthleteRequest();
@@ -141,8 +134,7 @@ export async function submitAthleteRequest(
     .eq("active", true)
     .maybeSingle();
 
-  if (!criteria)
-    throw structuredError("NO_ACTIVE_CRITERIA", "No active criteria version.");
+  if (!criteria) throw structuredError("NO_ACTIVE_CRITERIA", "No active criteria version.");
 
   const deadline = new Date(
     Date.now() + PLACEHOLDER_CHALLENGE_WINDOW_DAYS * 24 * 60 * 60 * 1000,
@@ -162,10 +154,7 @@ export async function submitAthleteRequest(
     .single();
 
   if (challengeError || !challenge)
-    throw structuredError(
-      "CHALLENGE_CREATE_FAILED",
-      challengeError?.message ?? "Unknown",
-    );
+    throw structuredError("CHALLENGE_CREATE_FAILED", challengeError?.message ?? "Unknown");
 
   // Step 4: Coach Invitation.
   // TODO: Governance gap - the coach matching algorithm (how coaches are
@@ -179,19 +168,13 @@ export async function submitAthleteRequest(
     .is("deleted_at", null);
 
   if (eligible && eligible.length > 0) {
-    await db.from("challenge_coach_matches").insert(
-      eligible.map((c) => ({ challenge_id: challenge.id, coach_id: c.id })),
-    );
+    await db
+      .from("challenge_coach_matches")
+      .insert(eligible.map((c) => ({ challenge_id: challenge.id, coach_id: c.id })));
   }
 
-  await db
-    .from("challenges")
-    .update({ state: "ACTIVE" })
-    .eq("id", challenge.id);
-  await db
-    .from("athletes")
-    .update({ state: "CHALLENGE_ACTIVE" })
-    .eq("id", athlete.id);
+  await db.from("challenges").update({ state: "ACTIVE" }).eq("id", challenge.id);
+  await db.from("athletes").update({ state: "CHALLENGE_ACTIVE" }).eq("id", athlete.id);
 
   return {
     requestId: request.id,
@@ -241,19 +224,14 @@ export async function loadCoachInvitations(supabase: Client, userId: string) {
  * Returns the challenge brief. The athlete's identity is never exposed to a
  * coach: only the training brief fields are projected.
  */
-export async function loadChallenge(
-  supabase: Client,
-  userId: string,
-  challengeId: string,
-) {
+export async function loadChallenge(supabase: Client, userId: string, challengeId: string) {
   const { data: challenge } = await supabase
     .from("challenges")
     .select("*")
     .eq("id", challengeId)
     .maybeSingle();
 
-  if (!challenge)
-    throw structuredError("CHALLENGE_NOT_FOUND", "Challenge not visible.", "warning");
+  if (!challenge) throw structuredError("CHALLENGE_NOT_FOUND", "Challenge not visible.", "warning");
 
   const db = await admin();
   const { data: brief } = await db
@@ -310,8 +288,7 @@ export async function persistProgramDraft(
     .select("id, state, deadline_at")
     .eq("id", input.challengeId)
     .maybeSingle();
-  if (!challenge)
-    throw structuredError("CHALLENGE_NOT_FOUND", "Challenge not visible.");
+  if (!challenge) throw structuredError("CHALLENGE_NOT_FOUND", "Challenge not visible.");
 
   // Deadline enforcement is immutable and absolute.
   if (Date.parse(challenge.deadline_at) <= Date.now())
@@ -328,8 +305,7 @@ export async function persistProgramDraft(
     .eq("coach_id", coach.id)
     .maybeSingle();
 
-  if (existing?.locked_at)
-    throw structuredError("PROGRAM_LOCKED", "This submission is locked.");
+  if (existing?.locked_at) throw structuredError("PROGRAM_LOCKED", "This submission is locked.");
 
   let programId = existing?.id;
 
@@ -340,7 +316,7 @@ export async function persistProgramDraft(
         title: input.title,
         summary: input.summary,
         version: (existing?.version ?? 1) + 1,
-        submitted_at: submit ? new Date().toISOString() : existing?.submitted_at ?? null,
+        submitted_at: submit ? new Date().toISOString() : (existing?.submitted_at ?? null),
       })
       .eq("id", programId);
     await db.from("program_weeks").delete().eq("program_id", programId);
@@ -419,18 +395,13 @@ export async function persistProgramDraft(
 
 /* ------------- Step 6-7: Submission Lock and evaluation queue ------------- */
 
-export async function lockAndQueue(
-  supabase: Client,
-  userId: string,
-  challengeId: string,
-) {
+export async function lockAndQueue(supabase: Client, userId: string, challengeId: string) {
   const { data: challenge } = await supabase
     .from("challenges")
     .select("id, state, deadline_at, anonymity_salt, criteria_version_id")
     .eq("id", challengeId)
     .maybeSingle();
-  if (!challenge)
-    throw structuredError("CHALLENGE_NOT_FOUND", "Challenge not visible.");
+  if (!challenge) throw structuredError("CHALLENGE_NOT_FOUND", "Challenge not visible.");
 
   const deadlinePassed = Date.parse(challenge.deadline_at) <= Date.now();
   if (!deadlinePassed && !(await isAdmin(supabase, userId)))
@@ -476,10 +447,7 @@ export async function lockAndQueue(
     });
     if (!error) queued += 1;
 
-    await db
-      .from("coaches")
-      .update({ state: "EVALUATION_PENDING" })
-      .eq("id", program.coach_id);
+    await db.from("coaches").update({ state: "EVALUATION_PENDING" }).eq("id", program.coach_id);
   }
 
   await db.from("challenges").update({ state: "EVALUATING" }).eq("id", challengeId);
@@ -509,8 +477,7 @@ export async function recordEngineResult(
     .select("id, challenge_id, status")
     .eq("id", result.evaluationId)
     .maybeSingle();
-  if (!evaluation)
-    throw structuredError("EVALUATION_NOT_FOUND", "Unknown evaluation.");
+  if (!evaluation) throw structuredError("EVALUATION_NOT_FOUND", "Unknown evaluation.");
   if (evaluation.status === "COMPLETED" || evaluation.status === "AUTO_REJECTED")
     throw structuredError("EVALUATION_IMMUTABLE", "Already finalised.");
 
@@ -598,18 +565,13 @@ async function computeRanking(challengeId: string) {
   return rankWithTieBreakers(rankable);
 }
 
-export async function loadRankedResults(
-  supabase: Client,
-  userId: string,
-  challengeId: string,
-) {
+export async function loadRankedResults(supabase: Client, userId: string, challengeId: string) {
   const { data: challenge } = await supabase
     .from("challenges")
     .select("*")
     .eq("id", challengeId)
     .maybeSingle();
-  if (!challenge)
-    throw structuredError("CHALLENGE_NOT_FOUND", "Challenge not visible.");
+  if (!challenge) throw structuredError("CHALLENGE_NOT_FOUND", "Challenge not visible.");
 
   const { data: evaluations } = await supabase
     .from("evaluations")

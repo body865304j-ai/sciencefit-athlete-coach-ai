@@ -46,11 +46,7 @@ export function NotificationsScreen() {
       if (readFilter === "unread" && item.read_at !== null) return false;
       if (readFilter === "read" && item.read_at === null) return false;
       if (category !== "all" && item.category !== category) return false;
-      if (
-        term &&
-        !`${item.title} ${item.body}`.toLowerCase().includes(term)
-      )
-        return false;
+      if (term && !`${item.title} ${item.body}`.toLowerCase().includes(term)) return false;
       return true;
     });
   }, [notifications, readFilter, category, search]);
@@ -61,9 +57,7 @@ export function NotificationsScreen() {
       await markRead({ data: { ids } });
       await queryClient.invalidateQueries({ queryKey: ["notifications"] });
     } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Could not update notifications.",
-      );
+      toast.error(error instanceof Error ? error.message : "Could not update notifications.");
     } finally {
       setBusy(false);
     }
@@ -73,10 +67,7 @@ export function NotificationsScreen() {
     <section aria-labelledby="notifications-title" className="mx-auto max-w-4xl">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1
-            id="notifications-title"
-            className="font-display text-2xl font-light text-foreground"
-          >
+          <h1 id="notifications-title" className="font-display text-2xl font-light text-foreground">
             Notifications
           </h1>
           <p className="mt-1 text-sm text-muted-foreground" aria-live="polite">
@@ -108,10 +99,7 @@ export function NotificationsScreen() {
             className="pl-9"
           />
         </div>
-        <Select
-          value={readFilter}
-          onValueChange={(value) => setReadFilter(value as ReadFilter)}
-        >
+        <Select value={readFilter} onValueChange={(value) => setReadFilter(value as ReadFilter)}>
           <SelectTrigger aria-label="Filter by read state" className="w-full sm:w-40">
             <SelectValue />
           </SelectTrigger>
@@ -146,9 +134,7 @@ export function NotificationsScreen() {
 
       {isError && (
         <div className="glass mt-6 rounded-lg p-6 text-center">
-          <p className="text-sm text-muted-foreground">
-            Notifications could not be loaded.
-          </p>
+          <p className="text-sm text-muted-foreground">Notifications could not be loaded.</p>
           <Button className="mt-4" onClick={() => void refetch()}>
             Try again
           </Button>
@@ -177,9 +163,7 @@ export function NotificationsScreen() {
                 <p className="text-data text-[0.65rem] uppercase tracking-[0.2em] text-primary">
                   {item.category.replaceAll("_", " ")}
                 </p>
-                <h2 className="mt-2 text-sm font-medium text-foreground">
-                  {item.title}
-                </h2>
+                <h2 className="mt-2 text-sm font-medium text-foreground">{item.title}</h2>
                 <p className="mt-1 text-sm text-muted-foreground">{item.body}</p>
                 <p className="text-data mt-2 text-xs text-warm-gray">
                   {formatWhen(item.created_at)}

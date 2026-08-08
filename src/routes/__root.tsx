@@ -19,12 +19,8 @@ function NotFoundComponent() {
   return (
     <div className="flex min-h-dvh items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <p className="text-data text-xs uppercase tracking-[0.3em] text-warm-gray">
-          404
-        </p>
-        <h1 className="mt-4 font-display text-3xl font-light text-foreground">
-          Page not found
-        </h1>
+        <p className="text-data text-xs uppercase tracking-[0.3em] text-warm-gray">404</p>
+        <h1 className="mt-4 font-display text-3xl font-light text-foreground">Page not found</h1>
         <p className="mt-3 text-sm text-muted-foreground">
           This page doesn&apos;t exist or has been moved.
         </p>
@@ -52,9 +48,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         <h1 className="font-display text-xl font-light text-foreground">
           This page didn&apos;t load
         </h1>
-        <p className="mt-3 text-sm text-muted-foreground">
-          Something went wrong on our end.
-        </p>
+        <p className="mt-3 text-sm text-muted-foreground">Something went wrong on our end.</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <button
             onClick={() => {

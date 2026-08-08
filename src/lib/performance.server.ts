@@ -20,9 +20,7 @@ async function admin() {
 }
 
 /** Builds the coach's submission history, most recent first. */
-export async function loadSubmissionHistory(
-  coachId: string,
-): Promise<SubmissionHistoryEntry[]> {
+export async function loadSubmissionHistory(coachId: string): Promise<SubmissionHistoryEntry[]> {
   const db = await admin();
   const { data } = await db
     .from("evaluations")
@@ -36,8 +34,7 @@ export async function loadSubmissionHistory(
 
   return (data ?? []).flatMap((row) => {
     if (row.overall_score === null) return [];
-    const level =
-      row.challenges?.athlete_requests?.experience_level ?? "beginner";
+    const level = row.challenges?.athlete_requests?.experience_level ?? "beginner";
     const difficulty: ChallengeDifficulty = challengeDifficulty(level);
     return [
       {
@@ -95,10 +92,7 @@ export async function updatePerformanceScore(
     .update({
       performance_score: breakdown.performanceScore,
       marketplace_enabled: breakdown.performanceScore >= 60,
-      state:
-        breakdown.performanceScore >= 60
-          ? "MARKETPLACE_ELIGIBLE"
-          : "RESULTS_RECEIVED",
+      state: breakdown.performanceScore >= 60 ? "MARKETPLACE_ELIGIBLE" : "RESULTS_RECEIVED",
     })
     .eq("id", coachId);
 

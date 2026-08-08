@@ -59,9 +59,7 @@ export const PROGRAM_DRAFT_AUTOSAVE_SECONDS = 60;
  * profile". The document names the inputs (athlete profile) and the output
  * levels, and Step 4's matrix keys off the result.
  */
-export function challengeDifficulty(
-  experienceLevel: string,
-): ChallengeDifficulty {
+export function challengeDifficulty(experienceLevel: string): ChallengeDifficulty {
   switch (experienceLevel) {
     case "beginner":
     case "intermediate":
@@ -90,13 +88,10 @@ export function estimatedComplexity(input: {
   hasInjuryNotes: boolean;
   goalLength: number;
 }): number {
-  const dataVolume =
-    input.totalFields === 0 ? 0 : input.fieldsProvided / input.totalFields;
+  const dataVolume = input.totalFields === 0 ? 0 : input.fieldsProvided / input.totalFields;
   const medicalFlags = (input.clinicalFlag ? 1 : 0) * 0.6 + (input.hasInjuryNotes ? 0.4 : 0);
   const goalSpecificity = Math.min(1, input.goalLength / 200);
-  return Number(
-    (((dataVolume + medicalFlags + goalSpecificity) / 3) * 100).toFixed(1),
-  );
+  return Number((((dataVolume + medicalFlags + goalSpecificity) / 3) * 100).toFixed(1));
 }
 
 /** BUSINESS_PROTOCOL 12.1 — Universal Challenge Rules, for display. */
@@ -128,14 +123,12 @@ export const CHALLENGE_RULES = [
   },
   {
     rule: "Original Work",
-    description:
-      "Programs must be original and created for the specific challenge.",
+    description: "Programs must be original and created for the specific challenge.",
     enforcement: "Plagiarism detection + manual review",
   },
   {
     rule: "Safety First",
-    description:
-      "Programs must not contain exercises contraindicated for the athlete's profile.",
+    description: "Programs must not contain exercises contraindicated for the athlete's profile.",
     enforcement: "AI safety check + admin review",
   },
 ] as const;
@@ -151,8 +144,16 @@ export const NON_EXCEPTIONABLE_RULES = [
 export const CHALLENGE_STATES = [
   { state: "DRAFT", definition: "Created but not yet published", duration: "≤ 1 hour" },
   { state: "PUBLISHED", definition: "Visible to eligible coaches", duration: "≤ 24 hours" },
-  { state: "ACTIVE", definition: "Coaches are programming and submitting", duration: "48–72 hours" },
-  { state: "LOCKED", definition: "Submissions sealed, evaluation pending", duration: "≤ 30 minutes" },
+  {
+    state: "ACTIVE",
+    definition: "Coaches are programming and submitting",
+    duration: "48–72 hours",
+  },
+  {
+    state: "LOCKED",
+    definition: "Submissions sealed, evaluation pending",
+    duration: "≤ 30 minutes",
+  },
   { state: "EVALUATING", definition: "AI Evaluation Engine processing", duration: "≤ 15 minutes" },
   { state: "COMPLETED", definition: "Winner selected, results distributed", duration: "≤ 7 days" },
   { state: "ARCHIVED", definition: "Retained for research", duration: "Indefinite" },

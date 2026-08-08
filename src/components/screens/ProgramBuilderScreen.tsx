@@ -100,17 +100,15 @@ function seedFromProgram(program: MyProgram): BuilderState {
         .map((day): DayState => {
           const exercises = [...(day.program_exercises ?? [])]
             .sort((a, b) => a.position - b.position)
-            .map(
-              (ex): ExerciseState => ({
-                localId: localId(),
-                name: ex.name,
-                sets: ex.sets,
-                reps: ex.reps,
-                loadNote: ex.load_note,
-                restNote: ex.rest_note,
-                coachingCue: ex.coaching_cue,
-              }),
-            );
+            .map((ex): ExerciseState => ({
+              localId: localId(),
+              name: ex.name,
+              sets: ex.sets,
+              reps: ex.reps,
+              loadNote: ex.load_note,
+              restNote: ex.rest_note,
+              coachingCue: ex.coaching_cue,
+            }));
           return {
             localId: localId(),
             dayNumber: day.day_number,
@@ -222,7 +220,9 @@ export function ProgramBuilderScreen({ challengeId }: { challengeId: string }) {
 
   const deadlineMs = challenge ? Date.parse(challenge.deadline_at) : null;
   const deadlinePassed = deadlineMs !== null && deadlineMs <= now;
-  const challengeOpen = challenge ? (challenge.state === "ACTIVE" || challenge.state === "PUBLISHED") : false;
+  const challengeOpen = challenge
+    ? challenge.state === "ACTIVE" || challenge.state === "PUBLISHED"
+    : false;
   const isSubmitted = Boolean(myProgram?.submitted_at);
   const isLocked = Boolean(myProgram?.locked_at) || isSubmitted || deadlinePassed || !challengeOpen;
 
@@ -232,7 +232,7 @@ export function ProgramBuilderScreen({ challengeId }: { challengeId: string }) {
       ? "The submission deadline has passed. Deadline enforcement is absolute and cannot be overridden."
       : !challengeOpen
         ? `This challenge is ${challenge.state} and is no longer accepting program edits.`
-        : Boolean(myProgram?.locked_at)
+        : myProgram?.locked_at
           ? "Your submission is locked and sealed for evaluation."
           : isSubmitted
             ? "Your program has already been submitted. Only one submission per coach is allowed."
@@ -250,7 +250,9 @@ export function ProgramBuilderScreen({ challengeId }: { challengeId: string }) {
 
   function collectIssues(result: z.SafeParseReturnType<unknown, unknown>): string[] {
     if (result.success) return [];
-    return result.error.issues.map((issue) => `${issue.path.join(".") || "form"}: ${issue.message}`);
+    return result.error.issues.map(
+      (issue) => `${issue.path.join(".") || "form"}: ${issue.message}`,
+    );
   }
 
   function update(mutator: (draft: BuilderState) => BuilderState) {
@@ -548,7 +550,10 @@ export function ProgramBuilderScreen({ challengeId }: { challengeId: string }) {
               <p className="text-muted-foreground">Brief unavailable.</p>
             )}
             {lockedReason && (
-              <p role="alert" className="rounded-md border border-border bg-secondary p-3 text-warm-gray">
+              <p
+                role="alert"
+                className="rounded-md border border-border bg-secondary p-3 text-warm-gray"
+              >
                 {lockedReason}
               </p>
             )}
@@ -678,7 +683,10 @@ export function ProgramBuilderScreen({ challengeId }: { challengeId: string }) {
                       </div>
                     </div>
 
-                    <ul className="mt-3 space-y-3" aria-label={`Exercises for day ${day.dayNumber}`}>
+                    <ul
+                      className="mt-3 space-y-3"
+                      aria-label={`Exercises for day ${day.dayNumber}`}
+                    >
                       {day.exercises.map((ex, exIndex) => (
                         <li
                           key={ex.localId}
@@ -734,7 +742,9 @@ export function ProgramBuilderScreen({ challengeId }: { challengeId: string }) {
                                 size="sm"
                                 disabled={isLocked}
                                 aria-label={`Remove ${ex.name || "exercise"}`}
-                                onClick={() => removeExercise(week.localId, day.localId, ex.localId)}
+                                onClick={() =>
+                                  removeExercise(week.localId, day.localId, ex.localId)
+                                }
                               >
                                 Remove
                               </Button>
@@ -857,14 +867,22 @@ export function ProgramBuilderScreen({ challengeId }: { challengeId: string }) {
             </Card>
           ))}
 
-          <Button type="button" variant="outline" disabled={isLocked || builder.weeks.length >= 52} onClick={addWeek}>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={isLocked || builder.weeks.length >= 52}
+            onClick={addWeek}
+          >
             Add week
           </Button>
         </div>
       </div>
 
       {issues.length > 0 && (
-        <div role="alert" className="mt-4 rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
+        <div
+          role="alert"
+          className="mt-4 rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive"
+        >
           <p className="font-medium">Fix the following before saving or submitting:</p>
           <ul className="mt-1 list-inside list-disc">
             {issues.map((issue) => (
@@ -875,7 +893,12 @@ export function ProgramBuilderScreen({ challengeId }: { challengeId: string }) {
       )}
 
       <div className="sticky bottom-0 mt-6 flex flex-wrap items-center gap-3 border-t border-border bg-background/95 p-4 backdrop-blur">
-        <Button type="button" variant="secondary" disabled={isLocked || saving} onClick={() => void persist(false)}>
+        <Button
+          type="button"
+          variant="secondary"
+          disabled={isLocked || saving}
+          onClick={() => void persist(false)}
+        >
           {saving ? "Saving…" : "Save draft"}
         </Button>
 
