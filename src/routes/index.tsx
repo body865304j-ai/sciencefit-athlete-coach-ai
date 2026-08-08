@@ -22,7 +22,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Athletes post a training request. Coaches compete anonymously. Every program is scored on seven evidence-based dimensions.",
+          "Athletes post a training request. Coaches compete anonymously. Every program is scored on seven evidence-based dimensions before a winner is delivered.",
       },
     ],
   }),
