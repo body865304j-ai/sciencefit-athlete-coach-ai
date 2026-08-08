@@ -15,13 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -146,13 +140,15 @@ export function SettingsScreen() {
     },
   });
 
-  function persistPreferences(next: Partial<{
-    units: "metric" | "imperial";
-    locale: string;
-    timezone: string;
-    deviceTierPreference: DeviceTier | null;
-    reducedMotion: boolean;
-  }>) {
+  function persistPreferences(
+    next: Partial<{
+      units: "metric" | "imperial";
+      locale: string;
+      timezone: string;
+      deviceTierPreference: DeviceTier | null;
+      reducedMotion: boolean;
+    }>,
+  ) {
     savePreferences.mutate({
       units,
       locale,
@@ -163,14 +159,16 @@ export function SettingsScreen() {
     });
   }
 
-  function persistNotifications(next: Partial<{
-    inAppEnabled: boolean;
-    emailEnabled: boolean;
-    pushEnabled: boolean;
-    mutedCategories: string[];
-    quietHoursStart: number | null;
-    quietHoursEnd: number | null;
-  }>) {
+  function persistNotifications(
+    next: Partial<{
+      inAppEnabled: boolean;
+      emailEnabled: boolean;
+      pushEnabled: boolean;
+      mutedCategories: string[];
+      quietHoursStart: number | null;
+      quietHoursEnd: number | null;
+    }>,
+  ) {
     saveNotifications.mutate({
       inAppEnabled,
       emailEnabled,
@@ -314,7 +312,12 @@ export function SettingsScreen() {
                     Reflects your operating system's "reduce motion" accessibility setting.
                   </p>
                 </div>
-                <Switch id="os-reduced-motion" checked={reducedMotion} disabled aria-readonly="true" />
+                <Switch
+                  id="os-reduced-motion"
+                  checked={reducedMotion}
+                  disabled
+                  aria-readonly="true"
+                />
               </div>
 
               <div className="flex items-center justify-between gap-4 rounded-lg border p-4">
@@ -385,9 +388,7 @@ export function SettingsScreen() {
           <Card>
             <CardHeader>
               <CardTitle>Delivery channels</CardTitle>
-              <CardDescription>
-                Choose where ScienceFit notifications reach you.
-              </CardDescription>
+              <CardDescription>Choose where ScienceFit notifications reach you.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between gap-4 rounded-lg border p-4">

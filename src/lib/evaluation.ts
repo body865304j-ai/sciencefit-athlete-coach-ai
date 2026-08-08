@@ -59,9 +59,7 @@ export interface ConfidenceReviewFlag {
   message: string;
 }
 
-export function confidenceReviewFlags(
-  dimensions: DimensionScore[],
-): ConfidenceReviewFlag[] {
+export function confidenceReviewFlags(dimensions: DimensionScore[]): ConfidenceReviewFlag[] {
   const flags: ConfidenceReviewFlag[] = [];
   const low = dimensions.filter((d) => d.confidence < MIN_DIMENSION_CONFIDENCE);
   if (low.length > 0) {
@@ -72,15 +70,11 @@ export function confidenceReviewFlags(
         .join(", ")}.`,
     });
   }
-  const drift = Math.abs(
-    aggregateTotalScore(dimensions) - aggregateUnweightedScore(dimensions),
-  );
+  const drift = Math.abs(aggregateTotalScore(dimensions) - aggregateUnweightedScore(dimensions));
   if (drift > MAX_CONFIDENCE_DRIFT_POINTS) {
     flags.push({
       code: "CONFIDENCE_DRIFT",
-      message: `Confidence-weighted score differs from unweighted by ${drift.toFixed(
-        1,
-      )} points.`,
+      message: `Confidence-weighted score differs from unweighted by ${drift.toFixed(1)} points.`,
     });
   }
   return flags;
@@ -116,10 +110,7 @@ export const CONFIDENCE_BANDS = [
 ] as const;
 
 export function confidenceBand(confidence: number) {
-  return (
-    CONFIDENCE_BANDS.find((b) => confidence >= b.min && confidence <= b.max) ??
-    null
-  );
+  return CONFIDENCE_BANDS.find((b) => confidence >= b.min && confidence <= b.max) ?? null;
 }
 
 /* ---------------------------------------------------------------
@@ -148,9 +139,7 @@ export type EscalationDecision = "NONE" | "L1" | "L2" | "L3" | "L4" | "L5";
  * Implements the escalation workflow decision tree in the order the document
  * draws it: Safety gate first, then expert, then medical, then dispute.
  */
-export function determineEscalation(
-  context: EscalationContext,
-): EscalationDecision {
+export function determineEscalation(context: EscalationContext): EscalationDecision {
   if (context.safetyScore < SAFETY_AUTO_REJECT_THRESHOLD) return "L1";
   if (
     context.safetyScore <= SAFETY_ADMIN_ALERT_THRESHOLD ||
@@ -165,15 +154,15 @@ export function determineEscalation(
 }
 
 /** AI Evaluation Engine 13.2 — response-time SLA in hours. */
-export const ESCALATION_SLA_HOURS: Record<
-  Exclude<EscalationDecision, "NONE">,
-  number
-> = { L1: 0, L2: 2, L3: 24, L4: 48, L5: 72 };
+export const ESCALATION_SLA_HOURS: Record<Exclude<EscalationDecision, "NONE">, number> = {
+  L1: 0,
+  L2: 2,
+  L3: 24,
+  L4: 48,
+  L5: 72,
+};
 
-export function escalationDueAt(
-  level: EscalationDecision,
-  from: Date = new Date(),
-): string | null {
+export function escalationDueAt(level: EscalationDecision, from: Date = new Date()): string | null {
   if (level === "NONE") return null;
   const hours = ESCALATION_SLA_HOURS[level];
   return new Date(from.getTime() + hours * 60 * 60 * 1000).toISOString();

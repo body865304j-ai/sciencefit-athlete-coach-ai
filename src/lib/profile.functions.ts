@@ -133,9 +133,7 @@ export const getMessages = createServerFn({ method: "POST" })
 export const sendMessage = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) =>
-    z
-      .object({ conversationId: uuid, body: z.string().trim().min(1).max(2000) })
-      .parse(input),
+    z.object({ conversationId: uuid, body: z.string().trim().min(1).max(2000) }).parse(input),
   )
   .handler(async ({ data, context }) => {
     const { sendMessage: send } = await import("@/lib/marketplace.server");

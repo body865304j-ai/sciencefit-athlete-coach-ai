@@ -19,8 +19,10 @@ export const Route = createFileRoute("/_authenticated/app/marketplace/$coachId")
       { name: "twitter:card", content: "summary" },
     ],
   }),
-  component: () => {
-    const { coachId } = Route.useParams();
-    return <CoachPublicProfileScreen coachId={coachId} />;
-  },
+  component: CoachProfileRoute,
 });
+
+function CoachProfileRoute() {
+  const { coachId } = Route.useParams();
+  return <CoachPublicProfileScreen coachId={coachId} />;
+}

@@ -91,8 +91,8 @@ function Landing() {
             <span className="text-primary"> evidence</span>.
           </h1>
           <p className="mt-7 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-            An athlete describes what they need. Coaches around the world answer
-            anonymously. Seven weighted dimensions decide whose program wins.
+            An athlete describes what they need. Coaches around the world answer anonymously. Seven
+            weighted dimensions decide whose program wins.
           </p>
           <div className="mt-10 flex flex-wrap gap-3">
             <Link
@@ -158,12 +158,8 @@ function Landing() {
         <ul className="grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
           {EVALUATION_DIMENSIONS.map((dimension) => (
             <li key={dimension.key} className="glass p-5">
-              <p className="text-data text-xs text-primary">
-                {dimension.weight.toFixed(1)}&times;
-              </p>
-              <p className="mt-2 text-sm font-medium text-foreground">
-                {dimension.label}
-              </p>
+              <p className="text-data text-xs text-primary">{dimension.weight.toFixed(1)}&times;</p>
+              <p className="mt-2 text-sm font-medium text-foreground">{dimension.label}</p>
             </li>
           ))}
         </ul>
@@ -188,13 +184,8 @@ function Landing() {
       >
         <ul className="flex flex-wrap gap-px overflow-hidden rounded-lg border border-border bg-border">
           {PERFORMANCE_TIERS.map((performanceTierItem) => (
-            <li
-              key={performanceTierItem.name}
-              className="glass min-w-[8.5rem] flex-1 p-5"
-            >
-              <p className="text-sm font-medium text-foreground">
-                {performanceTierItem.name}
-              </p>
+            <li key={performanceTierItem.name} className="glass min-w-[8.5rem] flex-1 p-5">
+              <p className="text-sm font-medium text-foreground">{performanceTierItem.name}</p>
               <p className="text-data mt-1 text-xs text-warm-gray">
                 {performanceTierItem.min}&ndash;{performanceTierItem.max}
               </p>
@@ -221,12 +212,8 @@ function Landing() {
 
       <footer className="border-t border-border px-5 py-10 sm:px-8">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4">
-          <p className="text-data text-xs uppercase tracking-[0.28em] text-warm-gray">
-            ScienceFit
-          </p>
-          <p className="text-xs text-warm-gray">
-            Rendering tier {tier} &middot; dark theme only
-          </p>
+          <p className="text-data text-xs uppercase tracking-[0.28em] text-warm-gray">ScienceFit</p>
+          <p className="text-xs text-warm-gray">Rendering tier {tier} &middot; dark theme only</p>
         </div>
       </footer>
     </main>

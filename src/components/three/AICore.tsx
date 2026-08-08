@@ -55,9 +55,7 @@ export function AICore({ tier, reducedMotion, scale = 1 }: AICoreProps) {
         <meshStandardMaterial color={CHAMPAGNE_GOLD} metalness={0.9} roughness={0.25} />
       </mesh>
       <mesh>
-        <sphereGeometry
-          args={[0.4, segments.sphereWidthSegments, segments.sphereHeightSegments]}
-        />
+        <sphereGeometry args={[0.4, segments.sphereWidthSegments, segments.sphereHeightSegments]} />
         <meshStandardMaterial
           ref={sphereMaterialRef}
           color={SOFT_CYAN}

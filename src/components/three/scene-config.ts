@@ -76,11 +76,7 @@ export const SCENE_QUALITY: Record<"A" | "B" | "C", SceneQuality> = {
   },
 };
 
-export type ParallaxLayerName =
-  | "background"
-  | "atmosphere"
-  | "midground"
-  | "foreground";
+export type ParallaxLayerName = "background" | "atmosphere" | "midground" | "foreground";
 
 export const PARALLAX_LAYERS: Record<ParallaxLayerName, number> = {
   background: 0.3,
@@ -89,10 +85,7 @@ export const PARALLAX_LAYERS: Record<ParallaxLayerName, number> = {
   foreground: 1.0,
 };
 
-export const PARALLAX_LAYER_Z_RANGES: Record<
-  ParallaxLayerName,
-  [number, number]
-> = {
+export const PARALLAX_LAYER_Z_RANGES: Record<ParallaxLayerName, [number, number]> = {
   background: [-100, -50],
   atmosphere: [-40, -20],
   midground: [-10, 0],

@@ -15,12 +15,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   Dialog,
   DialogContent,
@@ -168,9 +163,7 @@ export function CoachPublicProfileScreen({ coachId }: { coachId: string }) {
         <div className="glass rounded-lg p-10 text-center">
           <ShieldOff className="mx-auto size-6 text-warm-gray" aria-hidden="true" />
           <p className="mt-3 text-sm text-muted-foreground">
-            {error instanceof Error
-              ? error.message
-              : "This coach's profile is not available."}
+            {error instanceof Error ? error.message : "This coach's profile is not available."}
           </p>
         </div>
       </div>
@@ -269,8 +262,7 @@ export function CoachPublicProfileScreen({ coachId }: { coachId: string }) {
                   </span>
                 </TooltipTrigger>
                 <TooltipContent>
-                  Messaging requires a Performance Score of at least{" "}
-                  {MARKETPLACE_GATES.message}.
+                  Messaging requires a Performance Score of at least {MARKETPLACE_GATES.message}.
                 </TooltipContent>
               </Tooltip>
             )}

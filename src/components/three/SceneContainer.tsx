@@ -24,7 +24,11 @@ const DEFAULT_CAMERA: NonNullable<SceneContainerProps["camera"]> = {
  * The R3F root. Configures Canvas quality from SCENE_QUALITY[tier] and
  * renders nothing on Tier C — callers own the CSS fallback in that case.
  */
-export function SceneContainer({ children, className, camera = DEFAULT_CAMERA }: SceneContainerProps) {
+export function SceneContainer({
+  children,
+  className,
+  camera = DEFAULT_CAMERA,
+}: SceneContainerProps) {
   const { tier, reducedMotion } = useDeviceTier();
 
   if (tier === "C") return null;

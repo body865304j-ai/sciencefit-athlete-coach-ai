@@ -86,9 +86,7 @@ export const PERFORMANCE_TIERS = [
 
 export function performanceTier(score: number | null | undefined) {
   if (score === null || score === undefined) return null;
-  return (
-    PERFORMANCE_TIERS.find((t) => score >= t.min && score <= t.max) ?? null
-  );
+  return PERFORMANCE_TIERS.find((t) => score >= t.min && score <= t.max) ?? null;
 }
 
 /* ---------------------------------------------------------------
@@ -111,11 +109,7 @@ export function canHireCoach(
   marketplaceEnabled: boolean,
   hasPaymentMethod: boolean,
 ) {
-  return (
-    (score ?? -1) >= MARKETPLACE_GATES.hire &&
-    marketplaceEnabled &&
-    hasPaymentMethod
-  );
+  return (score ?? -1) >= MARKETPLACE_GATES.hire && marketplaceEnabled && hasPaymentMethod;
 }
 
 /* ---------------------------------------------------------------

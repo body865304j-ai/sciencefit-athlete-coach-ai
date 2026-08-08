@@ -32,9 +32,7 @@ interface EvaluationResultRow {
   reasoning: Reasoning;
 }
 
-function isEscalationSlaKey(
-  level: string,
-): level is keyof typeof ESCALATION_SLA_HOURS {
+function isEscalationSlaKey(level: string): level is keyof typeof ESCALATION_SLA_HOURS {
   return level in ESCALATION_SLA_HOURS;
 }
 
@@ -112,9 +110,7 @@ export function EvaluationScreen({ evaluationId }: EvaluationScreenProps) {
     <div className="space-y-8">
       <div>
         <h1 className="font-display text-2xl text-foreground">Evaluation results</h1>
-        <p className="text-muted-foreground">
-          {program?.title ?? "Untitled program"}
-        </p>
+        <p className="text-muted-foreground">{program?.title ?? "Untitled program"}</p>
       </div>
 
       <Card className="glass">
@@ -143,9 +139,7 @@ export function EvaluationScreen({ evaluationId }: EvaluationScreenProps) {
           </div>
           <div>
             <p className="text-sm text-muted-foreground">Anonymous hash</p>
-            <p className="break-all text-data text-foreground">
-              {evaluation.anonymous_hash}
-            </p>
+            <p className="break-all text-data text-foreground">{evaluation.anonymous_hash}</p>
           </div>
           <div>
             <p className="text-sm text-muted-foreground">Queued</p>
@@ -165,9 +159,7 @@ export function EvaluationScreen({ evaluationId }: EvaluationScreenProps) {
       </Card>
 
       <section>
-        <h2 className="mb-4 font-display text-xl text-foreground">
-          Dimension scores
-        </h2>
+        <h2 className="mb-4 font-display text-xl text-foreground">Dimension scores</h2>
         <div className="space-y-4">
           {dimensionRows.map(({ dim, result }) => {
             const band = result ? confidenceBand(result.confidence) : null;
@@ -194,16 +186,12 @@ export function EvaluationScreen({ evaluationId }: EvaluationScreenProps) {
                         <span className="text-data text-foreground">
                           {result.confidence.toFixed(2)}
                         </span>
-                        {band ? (
-                          <Badge variant="secondary">{band.label}</Badge>
-                        ) : null}
+                        {band ? <Badge variant="secondary">{band.label}</Badge> : null}
                       </div>
                       <Separator />
                       <div>
                         <p className="text-sm font-medium text-foreground">Reasoning</p>
-                        <p className="text-sm text-muted-foreground">
-                          {result.reasoning.summary}
-                        </p>
+                        <p className="text-sm text-muted-foreground">{result.reasoning.summary}</p>
                       </div>
                       {result.reasoning.attributions.length > 0 ? (
                         <ul className="space-y-1">
@@ -235,43 +223,41 @@ export function EvaluationScreen({ evaluationId }: EvaluationScreenProps) {
 
       <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div>
-          <h2 className="mb-2 font-display text-xl text-foreground">
-            Highest scoring dimensions
-          </h2>
+          <h2 className="mb-2 font-display text-xl text-foreground">Highest scoring dimensions</h2>
           <p className="mb-3 text-sm text-muted-foreground">
             Dimensions scoring at or above the overall score of{" "}
             {overallScore !== null ? overallScore.toFixed(1) : "—"}.
           </p>
           <ul className="space-y-2">
             {above.map(({ dim, result }) => (
-              <li key={dim.key} className="flex items-center justify-between rounded-md border border-border p-2">
+              <li
+                key={dim.key}
+                className="flex items-center justify-between rounded-md border border-border p-2"
+              >
                 <span className="text-foreground">{dim.label}</span>
                 <span className="text-data text-foreground">{result.score.toFixed(1)}</span>
               </li>
             ))}
-            {above.length === 0 ? (
-              <li className="text-sm text-muted-foreground">None.</li>
-            ) : null}
+            {above.length === 0 ? <li className="text-sm text-muted-foreground">None.</li> : null}
           </ul>
         </div>
         <div>
-          <h2 className="mb-2 font-display text-xl text-foreground">
-            Lowest scoring dimensions
-          </h2>
+          <h2 className="mb-2 font-display text-xl text-foreground">Lowest scoring dimensions</h2>
           <p className="mb-3 text-sm text-muted-foreground">
             Dimensions scoring below the overall score of{" "}
             {overallScore !== null ? overallScore.toFixed(1) : "—"}.
           </p>
           <ul className="space-y-2">
             {below.map(({ dim, result }) => (
-              <li key={dim.key} className="flex items-center justify-between rounded-md border border-border p-2">
+              <li
+                key={dim.key}
+                className="flex items-center justify-between rounded-md border border-border p-2"
+              >
                 <span className="text-foreground">{dim.label}</span>
                 <span className="text-data text-foreground">{result.score.toFixed(1)}</span>
               </li>
             ))}
-            {below.length === 0 ? (
-              <li className="text-sm text-muted-foreground">None.</li>
-            ) : null}
+            {below.length === 0 ? <li className="text-sm text-muted-foreground">None.</li> : null}
           </ul>
         </div>
       </section>
@@ -292,9 +278,7 @@ export function EvaluationScreen({ evaluationId }: EvaluationScreenProps) {
                         key={`${dim.key}-${attribution.programPath}-${index}`}
                         className="text-sm text-warm-gray"
                       >
-                        <span className="text-data text-foreground">
-                          {attribution.programPath}
-                        </span>
+                        <span className="text-data text-foreground">{attribution.programPath}</span>
                         : {attribution.note}
                       </li>
                     ))}

@@ -5,13 +5,7 @@ import { AlertTriangle, CalendarClock, ShieldAlert, Trophy } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -49,10 +43,7 @@ function evaluationsOf<T>(value: T | T[] | null): T[] {
   return Array.isArray(value) ? value : [value];
 }
 
-function programState(program: {
-  submitted_at: string | null;
-  locked_at: string | null;
-}) {
+function programState(program: { submitted_at: string | null; locked_at: string | null }) {
   if (program.locked_at) return "locked";
   if (program.submitted_at) return "submitted";
   return "draft";
@@ -88,37 +79,48 @@ export function CoachDashboardScreen() {
     () =>
       programs.filter((p) =>
         evaluationsOf(p.evaluations).some(
-          (e) =>
-            e.status === "QUEUED" ||
-            e.status === "RUNNING" ||
-            e.escalation_level !== "NONE",
+          (e) => e.status === "QUEUED" || e.status === "RUNNING" || e.escalation_level !== "NONE",
         ),
       ),
     [programs],
   );
 
-  const latestScore = scoreHistory.length > 0
-    ? scoreHistory[scoreHistory.length - 1]
-    : null;
+  const latestScore = scoreHistory.length > 0 ? scoreHistory[scoreHistory.length - 1] : null;
 
   const timeline = useMemo<TimelineItem[]>(() => {
     const items: TimelineItem[] = [];
     for (const i of invitations) {
       items.push({ key: `inv-invited-${i.id}`, date: i.invited_at, label: "Invitation received" });
       if (i.responded_at) {
-        items.push({ key: `inv-responded-${i.id}`, date: i.responded_at, label: "Invitation responded" });
+        items.push({
+          key: `inv-responded-${i.id}`,
+          date: i.responded_at,
+          label: "Invitation responded",
+        });
       }
     }
     for (const p of programs) {
       if (p.submitted_at) {
-        items.push({ key: `prog-submitted-${p.id}`, date: p.submitted_at, label: `Program submitted: ${p.title}` });
+        items.push({
+          key: `prog-submitted-${p.id}`,
+          date: p.submitted_at,
+          label: `Program submitted: ${p.title}`,
+        });
       }
       if (p.locked_at) {
-        items.push({ key: `prog-locked-${p.id}`, date: p.locked_at, label: `Program locked: ${p.title}` });
+        items.push({
+          key: `prog-locked-${p.id}`,
+          date: p.locked_at,
+          label: `Program locked: ${p.title}`,
+        });
       }
     }
     for (const s of scoreHistory) {
-      items.push({ key: `score-${s.id}`, date: s.created_at, label: `Performance Score updated to ${s.performance_score}` });
+      items.push({
+        key: `score-${s.id}`,
+        date: s.created_at,
+        label: `Performance Score updated to ${s.performance_score}`,
+      });
     }
     return items
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
@@ -170,9 +172,8 @@ export function CoachDashboardScreen() {
           <CardHeader>
             <CardTitle>No coach profile yet</CardTitle>
             <CardDescription>
-              You don&apos;t have a coach profile. Once you&apos;re verified
-              as a coach, challenge invitations and your Performance Score
-              will appear here.
+              You don&apos;t have a coach profile. Once you&apos;re verified as a coach, challenge
+              invitations and your Performance Score will appear here.
             </CardDescription>
           </CardHeader>
         </Card>
@@ -197,9 +198,7 @@ export function CoachDashboardScreen() {
           Available Challenges
         </h2>
         {availableChallenges.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            No open invitations right now.
-          </p>
+          <p className="text-sm text-muted-foreground">No open invitations right now.</p>
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
             {availableChallenges.map((i) => (
@@ -274,7 +273,10 @@ export function CoachDashboardScreen() {
       </section>
 
       <section aria-labelledby="reviews-heading" className="space-y-3">
-        <h2 id="reviews-heading" className="flex items-center gap-2 text-xl font-semibold text-foreground">
+        <h2
+          id="reviews-heading"
+          className="flex items-center gap-2 text-xl font-semibold text-foreground"
+        >
           <ShieldAlert className="h-5 w-5" aria-hidden="true" />
           Pending Reviews
         </h2>
@@ -310,8 +312,8 @@ export function CoachDashboardScreen() {
         </h2>
         {coach.performance_score === null ? (
           <p className="text-sm text-muted-foreground">
-            You don&apos;t have a Performance Score yet. It is calculated
-            after your first completed evaluation.
+            You don&apos;t have a Performance Score yet. It is calculated after your first completed
+            evaluation.
           </p>
         ) : (
           <Card className="glass">
@@ -364,7 +366,10 @@ export function CoachDashboardScreen() {
       </section>
 
       <section aria-labelledby="ranking-heading" className="space-y-3">
-        <h2 id="ranking-heading" className="flex items-center gap-2 text-xl font-semibold text-foreground">
+        <h2
+          id="ranking-heading"
+          className="flex items-center gap-2 text-xl font-semibold text-foreground"
+        >
           <Trophy className="h-5 w-5" aria-hidden="true" />
           Ranking
         </h2>
@@ -420,7 +425,10 @@ export function CoachDashboardScreen() {
         ) : (
           <ul className="space-y-2">
             {timeline.map((item) => (
-              <li key={item.key} className="flex items-center justify-between border-b border-border pb-2 text-sm">
+              <li
+                key={item.key}
+                className="flex items-center justify-between border-b border-border pb-2 text-sm"
+              >
                 <span className="text-foreground">{item.label}</span>
                 <span className="text-xs text-warm-gray">{formatDateTime(item.date)}</span>
               </li>

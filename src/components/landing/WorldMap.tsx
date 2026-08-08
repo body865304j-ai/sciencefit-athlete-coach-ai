@@ -47,7 +47,10 @@ export function WorldMap({ className }: { className?: string }) {
         </radialGradient>
       </defs>
 
-      <g className={still ? undefined : "ambient-rotate"} style={{ transformOrigin: "470px 230px" }}>
+      <g
+        className={still ? undefined : "ambient-rotate"}
+        style={{ transformOrigin: "470px 230px" }}
+      >
         <ellipse cx="470" cy="230" rx="430" ry="212" fill="url(#sf-glow)" />
         <ellipse
           cx="470"

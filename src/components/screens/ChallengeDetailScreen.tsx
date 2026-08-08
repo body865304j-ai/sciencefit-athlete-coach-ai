@@ -107,7 +107,13 @@ export function ChallengeDetailScreen({ challengeId }: { challengeId: string }) 
               <Separator />
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span className="text-muted-foreground">Your program status</span>
-                <Badge variant={myProgramStatus === "Submitted" || myProgramStatus === "Locked" ? "secondary" : "outline"}>
+                <Badge
+                  variant={
+                    myProgramStatus === "Submitted" || myProgramStatus === "Locked"
+                      ? "secondary"
+                      : "outline"
+                  }
+                >
                   {myProgramStatus}
                 </Badge>
               </div>
@@ -190,7 +196,11 @@ export function ChallengeDetailScreen({ challengeId }: { challengeId: string }) 
                         i <= currentStateIndex ? "bg-primary" : "bg-border"
                       }`}
                     />
-                    <span className={i === currentStateIndex ? "text-foreground" : "text-muted-foreground"}>
+                    <span
+                      className={
+                        i === currentStateIndex ? "text-foreground" : "text-muted-foreground"
+                      }
+                    >
                       {s.state}
                     </span>
                   </span>

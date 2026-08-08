@@ -13,13 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -30,12 +24,7 @@ import {
 } from "@/components/ui/table";
 import { athleteDashboardQuery, notificationsQuery } from "@/lib/queries";
 
-const ACTIVE_CHALLENGE_STATES = new Set([
-  "PUBLISHED",
-  "ACTIVE",
-  "LOCKED",
-  "EVALUATING",
-]);
+const ACTIVE_CHALLENGE_STATES = new Set(["PUBLISHED", "ACTIVE", "LOCKED", "EVALUATING"]);
 
 function formatDate(value: string | null | undefined) {
   if (!value) return "\u2014";
@@ -102,9 +91,7 @@ export function AthleteDashboardScreen() {
       completed,
       adherence: Math.round((completed / workoutLogs.length) * 100),
       recentAdherence:
-        recent.length === 0
-          ? 0
-          : Math.round((recentCompleted / recent.length) * 100),
+        recent.length === 0 ? 0 : Math.round((recentCompleted / recent.length) * 100),
       recentCount: recent.length,
     };
   }, [workoutLogs]);
@@ -185,8 +172,8 @@ export function AthleteDashboardScreen() {
           <CardHeader>
             <CardTitle>Get started</CardTitle>
             <CardDescription>
-              You don&apos;t have an athlete profile yet. Create a training
-              request to begin the ScienceFit lifecycle.
+              You don&apos;t have an athlete profile yet. Create a training request to begin the
+              ScienceFit lifecycle.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -236,9 +223,7 @@ export function AthleteDashboardScreen() {
           Current Challenges
         </h2>
         {currentChallenges.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            You have no active challenges right now.
-          </p>
+          <p className="text-sm text-muted-foreground">You have no active challenges right now.</p>
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
             {currentChallenges.map((c) => (
@@ -354,7 +339,10 @@ export function AthleteDashboardScreen() {
       </section>
 
       <section aria-labelledby="activity-heading" className="space-y-3">
-        <h2 id="activity-heading" className="flex items-center gap-2 text-xl font-semibold text-foreground">
+        <h2
+          id="activity-heading"
+          className="flex items-center gap-2 text-xl font-semibold text-foreground"
+        >
           <ListChecks className="h-5 w-5" aria-hidden="true" />
           Recent Activity
         </h2>
@@ -363,7 +351,10 @@ export function AthleteDashboardScreen() {
         ) : (
           <ul className="space-y-2">
             {recentActivity.map((item) => (
-              <li key={item.key} className="flex items-center justify-between border-b border-border pb-2 text-sm">
+              <li
+                key={item.key}
+                className="flex items-center justify-between border-b border-border pb-2 text-sm"
+              >
                 <span className="text-foreground">{item.label}</span>
                 <span className="text-muted-foreground">{item.detail}</span>
                 <span className="text-xs text-warm-gray">{formatDateTime(item.date)}</span>
@@ -376,14 +367,15 @@ export function AthleteDashboardScreen() {
       <Separator />
 
       <section aria-labelledby="history-heading" className="space-y-3">
-        <h2 id="history-heading" className="flex items-center gap-2 text-xl font-semibold text-foreground">
+        <h2
+          id="history-heading"
+          className="flex items-center gap-2 text-xl font-semibold text-foreground"
+        >
           <History className="h-5 w-5" aria-hidden="true" />
           Challenge History
         </h2>
         {completedChallenges.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            No completed challenges yet.
-          </p>
+          <p className="text-sm text-muted-foreground">No completed challenges yet.</p>
         ) : (
           <Table>
             <TableHeader>

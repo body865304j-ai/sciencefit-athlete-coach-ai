@@ -74,8 +74,8 @@ export function RankingScreen() {
         <h1 className="font-display text-2xl text-foreground">Coach ranking</h1>
         {!isViewerCoach ? (
           <p className="text-muted-foreground">
-            You are viewing the leaderboard as an athlete; performance history is only
-            available to coaches.
+            You are viewing the leaderboard as an athlete; performance history is only available to
+            coaches.
           </p>
         ) : null}
       </div>
@@ -115,11 +115,11 @@ export function RankingScreen() {
                         </Badge>
                       ) : null}
                     </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {row.country ?? "—"}
-                    </TableCell>
+                    <TableCell className="text-muted-foreground">{row.country ?? "—"}</TableCell>
                     <TableCell className="text-data">{row.performanceScore.toFixed(1)}</TableCell>
-                    <TableCell>{tier ? <Badge variant="outline">{tier.name}</Badge> : "—"}</TableCell>
+                    <TableCell>
+                      {tier ? <Badge variant="outline">{tier.name}</Badge> : "—"}
+                    </TableCell>
                     <TableCell className="text-muted-foreground">
                       {row.specializations.length > 0 ? row.specializations.join(", ") : "—"}
                     </TableCell>
@@ -174,8 +174,13 @@ export function RankingScreen() {
 
           {latest ? (
             <div className="flex flex-wrap gap-3">
-              <Badge variant={bonusLabel(Number(latest.trend_bonus), "Trending up", "Trending down").variant}>
-                Trend: {bonusLabel(Number(latest.trend_bonus), "Trending up", "Trending down").label} (
+              <Badge
+                variant={
+                  bonusLabel(Number(latest.trend_bonus), "Trending up", "Trending down").variant
+                }
+              >
+                Trend:{" "}
+                {bonusLabel(Number(latest.trend_bonus), "Trending up", "Trending down").label} (
                 {Number(latest.trend_bonus).toFixed(1)})
               </Badge>
               <Badge
@@ -183,7 +188,8 @@ export function RankingScreen() {
                   bonusLabel(Number(latest.consistency_bonus), "Consistent", "Inconsistent").variant
                 }
               >
-                Consistency: {bonusLabel(Number(latest.consistency_bonus), "Consistent", "Inconsistent").label} (
+                Consistency:{" "}
+                {bonusLabel(Number(latest.consistency_bonus), "Consistent", "Inconsistent").label} (
                 {Number(latest.consistency_bonus).toFixed(1)})
               </Badge>
             </div>
@@ -214,7 +220,9 @@ export function RankingScreen() {
                       {row.previous_score !== null ? Number(row.previous_score).toFixed(1) : "—"}
                     </TableCell>
                     <TableCell className="text-data">{Number(row.base_score).toFixed(1)}</TableCell>
-                    <TableCell className="text-data">{Number(row.trend_bonus).toFixed(1)}</TableCell>
+                    <TableCell className="text-data">
+                      {Number(row.trend_bonus).toFixed(1)}
+                    </TableCell>
                     <TableCell className="text-data">
                       {Number(row.consistency_bonus).toFixed(1)}
                     </TableCell>

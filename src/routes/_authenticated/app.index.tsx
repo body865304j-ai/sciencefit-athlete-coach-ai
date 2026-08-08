@@ -55,9 +55,7 @@ function DashboardRoute() {
       await pickRole({ data: { role } });
       await queryClient.invalidateQueries();
     } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Could not set your role.",
-      );
+      toast.error(error instanceof Error ? error.message : "Could not set your role.");
     } finally {
       setBusy(false);
     }
@@ -66,15 +64,11 @@ function DashboardRoute() {
   if (!isCoach && !isAthlete) {
     return (
       <section aria-labelledby="role-title" className="mx-auto max-w-2xl">
-        <h1
-          id="role-title"
-          className="font-display text-2xl font-light text-foreground"
-        >
+        <h1 id="role-title" className="font-display text-2xl font-light text-foreground">
           How will you use ScienceFit?
         </h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          Athletes post a training request. Coaches compete anonymously to
-          answer it.
+          Athletes post a training request. Coaches compete anonymously to answer it.
         </p>
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           <div className="glass rounded-lg p-6">
@@ -82,11 +76,7 @@ function DashboardRoute() {
             <p className="mt-2 text-sm text-muted-foreground">
               Create a request and receive the winning program.
             </p>
-            <Button
-              className="mt-5 w-full"
-              disabled={busy}
-              onClick={() => void select("athlete")}
-            >
+            <Button className="mt-5 w-full" disabled={busy} onClick={() => void select("athlete")}>
               Continue as athlete
             </Button>
           </div>

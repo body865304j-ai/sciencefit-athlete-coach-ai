@@ -35,9 +35,7 @@ export async function notify(drafts: NotificationDraft[]) {
     .select("user_id, in_app_enabled, muted_categories")
     .in("user_id", userIds);
 
-  const byUser = new Map(
-    (preferences ?? []).map((p) => [p.user_id, p] as const),
-  );
+  const byUser = new Map((preferences ?? []).map((p) => [p.user_id, p] as const));
 
   const rows = drafts
     .filter((draft) => {
@@ -66,11 +64,7 @@ export async function notify(drafts: NotificationDraft[]) {
 /** Resolves the auth user id behind an athlete row. */
 export async function athleteUserId(athleteId: string) {
   const db = await admin();
-  const { data } = await db
-    .from("athletes")
-    .select("user_id")
-    .eq("id", athleteId)
-    .maybeSingle();
+  const { data } = await db.from("athletes").select("user_id").eq("id", athleteId).maybeSingle();
   return data?.user_id ?? null;
 }
 
@@ -78,10 +72,7 @@ export async function athleteUserId(athleteId: string) {
 export async function coachUserIds(coachIds: string[]) {
   if (coachIds.length === 0) return new Map<string, string>();
   const db = await admin();
-  const { data } = await db
-    .from("coaches")
-    .select("id, user_id")
-    .in("id", coachIds);
+  const { data } = await db.from("coaches").select("id, user_id").in("id", coachIds);
   return new Map((data ?? []).map((row) => [row.id, row.user_id] as const));
 }
 

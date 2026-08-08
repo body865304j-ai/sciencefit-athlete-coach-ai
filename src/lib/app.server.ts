@@ -85,10 +85,8 @@ export async function loadAthleteDashboard(supabase: Client, userId: string) {
       activeChallenges: challenges.filter((c) =>
         ["PUBLISHED", "ACTIVE", "LOCKED", "EVALUATING"].includes(c.state),
       ).length,
-      completedChallenges: challenges.filter((c) => c.state === "COMPLETED")
-        .length,
-      programsDelivered: challenges.filter((c) => c.completed_at !== null)
-        .length,
+      completedChallenges: challenges.filter((c) => c.state === "COMPLETED").length,
+      programsDelivered: challenges.filter((c) => c.completed_at !== null).length,
       sessionsLogged: logs.length,
       completedSessions: logs.filter((l) => l.completed).length,
     },
@@ -150,12 +148,10 @@ export async function loadCoachDashboard(supabase: Client, userId: string) {
   const invitations = invitationsRes.data ?? [];
   const programs = programsRes.data ?? [];
 
-  const evaluated = programs.filter(
-    (p) => many(p.evaluations).some((e) => e.status === "COMPLETED"),
+  const evaluated = programs.filter((p) =>
+    many(p.evaluations).some((e) => e.status === "COMPLETED"),
   );
-  const wins = programs.filter((p) =>
-    many(p.evaluations).some((e) => e.rank === 1),
-  ).length;
+  const wins = programs.filter((p) => many(p.evaluations).some((e) => e.rank === 1)).length;
 
   const rankInfo = await loadCoachRankPosition(coach.id);
 
@@ -174,16 +170,12 @@ export async function loadCoachDashboard(supabase: Client, userId: string) {
       drafts: programs.filter((p) => p.submitted_at === null).length,
       submitted: programs.filter((p) => p.submitted_at !== null).length,
       awaitingEvaluation: programs.filter((p) =>
-        many(p.evaluations).some(
-          (e) => e.status === "QUEUED" || e.status === "RUNNING",
-        ),
+        many(p.evaluations).some((e) => e.status === "QUEUED" || e.status === "RUNNING"),
       ).length,
       completed: evaluated.length,
       wins,
       successRate:
-        evaluated.length === 0
-          ? 0
-          : Number(((wins / evaluated.length) * 100).toFixed(1)),
+        evaluated.length === 0 ? 0 : Number(((wins / evaluated.length) * 100).toFixed(1)),
     },
     rank: rankInfo.rank,
     totalRanked: rankInfo.total,
@@ -228,9 +220,7 @@ export async function loadLeaderboard(supabase: Client, userId: string) {
     ? await db.from("profiles").select("id, display_name, country").in("id", profileIds)
     : { data: [] };
 
-  const nameById = new Map(
-    (profiles ?? []).map((p) => [p.id, p] as const),
-  );
+  const nameById = new Map((profiles ?? []).map((p) => [p.id, p] as const));
 
   const { data: me } = await supabase
     .from("coaches")
@@ -249,8 +239,7 @@ export async function loadLeaderboard(supabase: Client, userId: string) {
     isViewer: me?.id === row.id,
   }));
 
-  let history: Database["public"]["Tables"]["coach_performance_scores"]["Row"][] =
-    [];
+  let history: Database["public"]["Tables"]["coach_performance_scores"]["Row"][] = [];
   if (me) {
     const { data } = await db
       .from("coach_performance_scores")
@@ -286,7 +275,10 @@ export async function loadMarketplace(_supabase: Client) {
     ? await db
         .from("profiles")
         .select("id, display_name, country, city")
-        .in("id", rows.map((row) => row.user_id))
+        .in(
+          "id",
+          rows.map((row) => row.user_id),
+        )
     : { data: [] };
   const byId = new Map((profiles ?? []).map((p) => [p.id, p] as const));
 
@@ -323,11 +315,7 @@ export async function loadNotifications(supabase: Client, userId: string) {
       .eq("user_id", userId)
       .order("created_at", { ascending: false })
       .limit(200),
-    supabase
-      .from("notification_preferences")
-      .select("*")
-      .eq("user_id", userId)
-      .maybeSingle(),
+    supabase.from("notification_preferences").select("*").eq("user_id", userId).maybeSingle(),
   ]);
 
   return {
@@ -392,16 +380,8 @@ export async function saveNotificationPreferences(
 export async function loadAccount(supabase: Client, userId: string) {
   const [profile, prefs, notifPrefs, athlete, coach, roles] = await Promise.all([
     supabase.from("profiles").select("*").eq("id", userId).maybeSingle(),
-    supabase
-      .from("user_preferences")
-      .select("*")
-      .eq("user_id", userId)
-      .maybeSingle(),
-    supabase
-      .from("notification_preferences")
-      .select("*")
-      .eq("user_id", userId)
-      .maybeSingle(),
+    supabase.from("user_preferences").select("*").eq("user_id", userId).maybeSingle(),
+    supabase.from("notification_preferences").select("*").eq("user_id", userId).maybeSingle(),
     supabase.from("athletes").select("*").eq("user_id", userId).maybeSingle(),
     supabase.from("coaches").select("*").eq("user_id", userId).maybeSingle(),
     supabase.from("user_roles").select("role").eq("user_id", userId),
@@ -475,11 +455,7 @@ export async function saveCoachProfile(
 
 /* ------------------------------ Evaluation ------------------------------- */
 
-export async function loadEvaluation(
-  supabase: Client,
-  _userId: string,
-  evaluationId: string,
-) {
+export async function loadEvaluation(supabase: Client, _userId: string, evaluationId: string) {
   const { data: evaluation } = await supabase
     .from("evaluations")
     .select(

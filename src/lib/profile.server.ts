@@ -94,11 +94,7 @@ export async function loadMyProfile(supabase: Client, userId: string) {
   }>;
 
   const evaluations = programs.flatMap((p) =>
-    p.evaluations === null
-      ? []
-      : Array.isArray(p.evaluations)
-        ? p.evaluations
-        : [p.evaluations],
+    p.evaluations === null ? [] : Array.isArray(p.evaluations) ? p.evaluations : [p.evaluations],
   );
   const completed = evaluations.filter((e) => e.status === "COMPLETED");
   const wins = completed.filter((e) => e.rank === 1).length;
@@ -107,8 +103,7 @@ export async function loadMyProfile(supabase: Client, userId: string) {
       ? null
       : Number(
           (
-            completed.reduce((sum, e) => sum + Number(e.overall_score ?? 0), 0) /
-            completed.length
+            completed.reduce((sum, e) => sum + Number(e.overall_score ?? 0), 0) / completed.length
           ).toFixed(1),
         );
 
@@ -120,9 +115,7 @@ export async function loadMyProfile(supabase: Client, userId: string) {
   return {
     profile: profileRes.data,
     athlete,
-    coach: coach
-      ? { ...coach, certifications: parseCertifications(coach.certifications) }
-      : null,
+    coach: coach ? { ...coach, certifications: parseCertifications(coach.certifications) } : null,
     roles: (rolesRes.data ?? []).map((r) => r.role),
     performanceHistory: historyRes.data ?? [],
     coachStats: {
@@ -131,9 +124,7 @@ export async function loadMyProfile(supabase: Client, userId: string) {
       wins,
       averageScore,
       successRate:
-        completed.length === 0
-          ? 0
-          : Number(((wins / completed.length) * 100).toFixed(1)),
+        completed.length === 0 ? 0 : Number(((wins / completed.length) * 100).toFixed(1)),
     },
     athleteStats: {
       requests: (requestsRes.data ?? []).length,
@@ -260,16 +251,14 @@ export async function loadPublicCoachProfile(coachId: string) {
 
   const { data: profile } = await db
     .from("profiles")
-    .select("display_name, country, city, headline, bio, avatar_url, profile_visibility, show_location")
+    .select(
+      "display_name, country, city, headline, bio, avatar_url, profile_visibility, show_location",
+    )
     .eq("id", coach.user_id)
     .maybeSingle();
 
   if (!profile || profile.profile_visibility !== "public")
-    throw structuredError(
-      "COACH_NOT_PUBLIC",
-      "This coach keeps their profile private.",
-      "warning",
-    );
+    throw structuredError("COACH_NOT_PUBLIC", "This coach keeps their profile private.", "warning");
 
   const { data: history } = await db
     .from("coach_performance_scores")
