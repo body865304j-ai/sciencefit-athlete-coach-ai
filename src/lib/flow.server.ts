@@ -18,20 +18,31 @@ async function admin() {
   return supabaseAdmin;
 }
 
+/**
+ * Role checks read the caller's own rows from `user_roles` (RLS scopes the
+ * table to `auth.uid()` or an admin). The `has_role` helper now lives in the
+ * private schema so it is not callable over the Data API.
+ */
+async function hasRole(
+  supabase: Client,
+  userId: string,
+  role: Database["public"]["Enums"]["app_role"],
+) {
+  const { data } = await supabase
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", userId)
+    .eq("role", role)
+    .maybeSingle();
+  return data !== null;
+}
+
 async function isAdmin(supabase: Client, userId: string) {
-  const { data } = await supabase.rpc("has_role", {
-    _user_id: userId,
-    _role: "admin",
-  });
-  return Boolean(data);
+  return hasRole(supabase, userId, "admin");
 }
 
 async function isMedicalReviewer(supabase: Client, userId: string) {
-  const { data } = await supabase.rpc("has_role", {
-    _user_id: userId,
-    _role: "medical_reviewer",
-  });
-  return Boolean(data);
+  return hasRole(supabase, userId, "medical_reviewer");
 }
 
 /* ------------------------------ Users ------------------------------ */
