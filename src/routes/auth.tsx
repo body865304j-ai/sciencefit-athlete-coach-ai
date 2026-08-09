@@ -123,9 +123,8 @@ function AuthPage() {
             Confirm your email
           </h1>
           <p className="mt-3 text-sm text-muted-foreground">
-            We sent a confirmation link to{" "}
-            <span className="text-foreground">{pendingEmail}</span>. Open it to activate your
-            account, then sign in.
+            We sent a confirmation link to <span className="text-foreground">{pendingEmail}</span>.
+            Open it to activate your account, then sign in.
           </p>
           <button
             type="button"
@@ -202,7 +201,10 @@ function AuthPage() {
           </div>
 
           {formError && (
-            <p role="alert" className="rounded-md bg-destructive/10 px-4 py-3 text-sm text-destructive">
+            <p
+              role="alert"
+              className="rounded-md bg-destructive/10 px-4 py-3 text-sm text-destructive"
+            >
               {formError}
             </p>
           )}
