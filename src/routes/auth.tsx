@@ -4,8 +4,12 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/hooks/useSession";
+import { authErrorMessage, safeRedirect } from "@/lib/auth-errors";
 
 export const Route = createFileRoute("/auth")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    redirect: typeof search["redirect"] === "string" ? (search["redirect"] as string) : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Sign in — ScienceFit" },
@@ -34,18 +38,25 @@ function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [pendingEmail, setPendingEmail] = useState<string | null>(null);
   const { session, loading } = useSession();
   const navigate = useNavigate();
+  const search = Route.useSearch();
+  const destination = safeRedirect(search.redirect);
 
+  // Authenticated users never sit on /auth — send them to the app instead of
+  // the marketing page, which is what made successful logins look like no-ops.
   useEffect(() => {
-    if (!loading && session) void navigate({ to: "/", replace: true });
-  }, [loading, session, navigate]);
+    if (!loading && session) void navigate({ to: destination, replace: true });
+  }, [loading, session, navigate, destination]);
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
+    setFormError(null);
     const parsed = credentials.safeParse({ email, password });
     if (!parsed.success) {
-      toast.error(parsed.error.issues[0]?.message ?? "Check your details.");
+      setFormError(parsed.error.issues[0]?.message ?? "Check your details.");
       return;
     }
 
@@ -59,18 +70,83 @@ function AuthPage() {
         });
         if (error) throw error;
         if (!data.session) {
-          toast.success("Check your email to confirm your account.");
+          // Email confirmation is enabled: the user is NOT signed in yet.
+          setPendingEmail(parsed.data.email);
+          setPassword("");
           return;
         }
       } else {
         const { error } = await supabase.auth.signInWithPassword(parsed.data);
         if (error) throw error;
       }
+      // Session arrives via onAuthStateChange -> the effect above navigates.
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Authentication failed.");
+      setFormError(authErrorMessage(error));
     } finally {
       setBusy(false);
     }
+  }
+
+  async function resendConfirmation() {
+    if (!pendingEmail) return;
+    setBusy(true);
+    try {
+      const { error } = await supabase.auth.resend({ type: "signup", email: pendingEmail });
+      if (error) throw error;
+      toast.success("Confirmation email sent again.");
+    } catch (error) {
+      toast.error(authErrorMessage(error));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  // Initial session probe / redirect in flight: don't flash the form.
+  if (loading || session) {
+    return (
+      <main className="flex min-h-dvh items-center justify-center bg-background px-5">
+        <p className="text-data text-xs uppercase tracking-[0.34em] text-warm-gray" role="status">
+          Checking your session…
+        </p>
+      </main>
+    );
+  }
+
+  if (pendingEmail) {
+    return (
+      <main className="flex min-h-dvh items-center justify-center bg-background px-5 py-16">
+        <div className="glass w-full max-w-md rounded-xl p-8">
+          <Link to="/" className="text-data text-[0.7rem] uppercase tracking-[0.34em] text-primary">
+            ScienceFit
+          </Link>
+          <h1 className="mt-6 font-display text-3xl font-light text-foreground">
+            Confirm your email
+          </h1>
+          <p className="mt-3 text-sm text-muted-foreground">
+            We sent a confirmation link to <span className="text-foreground">{pendingEmail}</span>.
+            Open it to activate your account, then sign in.
+          </p>
+          <button
+            type="button"
+            onClick={() => void resendConfirmation()}
+            disabled={busy}
+            className="tap-target mt-8 w-full rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:bg-accent disabled:opacity-60"
+          >
+            {busy ? "Sending…" : "Resend confirmation email"}
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setPendingEmail(null);
+              setMode("signin");
+            }}
+            className="tap-target mt-4 w-full text-sm text-warm-gray underline-offset-4 hover:text-foreground hover:underline"
+          >
+            Back to sign in
+          </button>
+        </div>
+      </main>
+    );
   }
 
   return (
@@ -117,7 +193,22 @@ function AuthPage() {
               onChange={(event) => setPassword(event.target.value)}
               className="tap-target mt-2 w-full rounded-md border border-input bg-muted px-4 text-sm text-foreground outline-none focus:border-primary"
             />
+            {mode === "signup" && (
+              <p className="mt-2 text-xs text-warm-gray">
+                At least 8 characters. Breached passwords are rejected.
+              </p>
+            )}
           </div>
+
+          {formError && (
+            <p
+              role="alert"
+              className="rounded-md bg-destructive/10 px-4 py-3 text-sm text-destructive"
+            >
+              {formError}
+            </p>
+          )}
+
           <button
             type="submit"
             disabled={busy}
@@ -129,7 +220,10 @@ function AuthPage() {
 
         <button
           type="button"
-          onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+          onClick={() => {
+            setMode(mode === "signin" ? "signup" : "signin");
+            setFormError(null);
+          }}
           className="tap-target mt-6 w-full text-sm text-warm-gray underline-offset-4 hover:text-foreground hover:underline"
         >
           {mode === "signin" ? "No account yet? Create one" : "Already have an account? Sign in"}
