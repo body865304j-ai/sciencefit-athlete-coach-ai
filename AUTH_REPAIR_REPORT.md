@@ -1,7 +1,7 @@
 # AUTH_REPAIR_REPORT.md
 
 **AUTH STATUS: 🟡 WORKING WITH CONDITIONS**
-(Code path fully validated end-to-end. The one remaining condition is a product decision: email confirmation is required before a new account can sign in.)
+(Code path fully validated end-to-end. Remaining condition: email confirmation and password-reset emails require a verified sending domain in production; email confirmation before first sign-in is kept by product decision.)
 
 ## 1. Root cause
 
@@ -26,6 +26,7 @@ Secondary defects (all fixed): raw provider error strings shown to users (includ
 - `src/routes/auth.tsx` — rewritten UX/state machine (no architecture change)
 - `src/routes/_authenticated/route.tsx` — gate now preserves the intended destination
 - `src/lib/auth-errors.ts` — **new**: user-safe error mapping + same-origin redirect validation
+- `src/routes/reset-password.tsx` — **new**: password reset completion page
 
 ## 4. Problems discovered
 
@@ -50,6 +51,7 @@ Not a problem (verified working, left untouched): session persistence in `localS
 - Inline `role="alert"` error region replaces toast-only feedback; password guidance shown in sign-up mode.
 - "Checking your session…" state while the session probe is in flight — the form no longer flashes and there is no loading loop.
 - Open redirect prevented by `safeRedirect()` (rejects absolute URLs, protocol-relative `//`, and `/auth*`).
+- **Password reset flow added:** "Forgot your password?" on `/auth` calls `resetPasswordForEmail` with `redirectTo=<origin>/reset-password`, and always answers with a neutral "if that email has an account…" message (no account enumeration). The new public `/reset-password` page waits for the recovery session, validates + confirms the new password, calls `updateUser({ password })`, and lands the user on `/app`; an expired or missing link shows a clear recovery message.
 
 ## 6. Security issues discovered
 
@@ -104,6 +106,9 @@ Headless Chromium against the running app:
 | 9. Logout | ✅ → `/auth`, 0 auth tokens in `localStorage` |
 | 10. Protected route after logout | ✅ → `/auth?redirect=%2Fapp` |
 | Weak/breached password signup | ✅ rejected with readable message |
+| Forgot password without an email entered | ✅ inline guidance |
+| Forgot password with an email | ✅ neutral confirmation, `POST /auth/v1/recover` 200 |
+| `/reset-password` without a valid link | ✅ "link is invalid or has expired" + back to sign in |
 
 Test accounts created for validation were deleted afterwards.
 
@@ -111,11 +116,11 @@ Test accounts created for validation were deleted afterwards.
 
 1. **Email confirmation gate (product decision, not a bug).** New users cannot sign in until they click the emailed link. If you want signup to sign users in immediately, say so and I'll enable auto-confirm.
 2. **Email deliverability** — confirmation emails currently go through the default shared sender with a low hourly rate limit. For production, configure a custom sending domain.
-3. **No password reset flow** exists yet (`resetPasswordForEmail` + `/reset-password` page). Not part of this repair scope; tell me if you want it.
+3. **Password reset emails** depend on the same email sender as confirmations — they will only reach real inboxes once a sending domain is configured.
 4. **Pre-existing hydration warning** (unrelated to auth): the device-tier system renders `data-tier="C"` server-side and re-evaluates on the client. Harmless (React re-renders the subtree) and intentional per the device-tier design; left untouched.
 
 ## What you need to do manually
 
-1. **Decide on email confirmation** — keep it (users must confirm before first sign-in) or ask me to enable auto-confirm.
-2. **Before launch:** set up a custom email sending domain so confirmation emails aren't rate-limited.
+1. **Set up a custom email sending domain** (Cloud → Emails). Confirmation and password-reset emails both depend on it; the default shared sender is rate-limited. This is the only blocking manual step for production.
+2. Nothing to decide on confirmation — you chose to keep email confirmation, and the UI now handles it explicitly with a resend option.
 3. Nothing else — no environment variables, provider credentials, or database changes are required.
