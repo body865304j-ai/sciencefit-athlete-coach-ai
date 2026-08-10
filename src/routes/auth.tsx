@@ -101,6 +101,28 @@ function AuthPage() {
     }
   }
 
+  async function sendPasswordReset() {
+    setFormError(null);
+    const parsedEmail = z.string().trim().email().max(255).safeParse(email);
+    if (!parsedEmail.success) {
+      setFormError("Enter your email address first, then request a reset link.");
+      return;
+    }
+    setBusy(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(parsedEmail.data, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) throw error;
+      // Never reveal whether the address exists.
+      toast.success("If that email has an account, a reset link is on its way.");
+    } catch (error) {
+      setFormError(authErrorMessage(error));
+    } finally {
+      setBusy(false);
+    }
+  }
+
   // Initial session probe / redirect in flight: don't flash the form.
   if (loading || session) {
     return (
@@ -218,13 +240,24 @@ function AuthPage() {
           </button>
         </form>
 
+        {mode === "signin" && (
+          <button
+            type="button"
+            onClick={() => void sendPasswordReset()}
+            disabled={busy}
+            className="tap-target mt-4 w-full text-sm text-warm-gray underline-offset-4 hover:text-foreground hover:underline disabled:opacity-60"
+          >
+            Forgot your password?
+          </button>
+        )}
+
         <button
           type="button"
           onClick={() => {
             setMode(mode === "signin" ? "signup" : "signin");
             setFormError(null);
           }}
-          className="tap-target mt-6 w-full text-sm text-warm-gray underline-offset-4 hover:text-foreground hover:underline"
+          className="tap-target mt-4 w-full text-sm text-warm-gray underline-offset-4 hover:text-foreground hover:underline"
         >
           {mode === "signin" ? "No account yet? Create one" : "Already have an account? Sign in"}
         </button>
