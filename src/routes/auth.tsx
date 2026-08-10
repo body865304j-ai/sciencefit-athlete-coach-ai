@@ -240,13 +240,24 @@ function AuthPage() {
           </button>
         </form>
 
+        {mode === "signin" && (
+          <button
+            type="button"
+            onClick={() => void sendPasswordReset()}
+            disabled={busy}
+            className="tap-target mt-4 w-full text-sm text-warm-gray underline-offset-4 hover:text-foreground hover:underline disabled:opacity-60"
+          >
+            Forgot your password?
+          </button>
+        )}
+
         <button
           type="button"
           onClick={() => {
             setMode(mode === "signin" ? "signup" : "signin");
             setFormError(null);
           }}
-          className="tap-target mt-6 w-full text-sm text-warm-gray underline-offset-4 hover:text-foreground hover:underline"
+          className="tap-target mt-4 w-full text-sm text-warm-gray underline-offset-4 hover:text-foreground hover:underline"
         >
           {mode === "signin" ? "No account yet? Create one" : "Already have an account? Sign in"}
         </button>
