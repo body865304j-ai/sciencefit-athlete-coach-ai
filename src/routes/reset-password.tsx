@@ -83,7 +83,9 @@ function ResetPasswordPage() {
         <Link to="/" className="text-data text-[0.7rem] uppercase tracking-[0.34em] text-primary">
           ScienceFit
         </Link>
-        <h1 className="mt-6 font-display text-3xl font-light text-foreground">Set a new password</h1>
+        <h1 className="mt-6 font-display text-3xl font-light text-foreground">
+          Set a new password
+        </h1>
 
         {ready === "checking" && (
           <p className="mt-4 text-sm text-muted-foreground" role="status">
