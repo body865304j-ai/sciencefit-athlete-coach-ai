@@ -81,13 +81,39 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { title: "ScienceFit — Anonymous Coaching Challenges, Scored by Science" },
-      { property: "og:title", content: "ScienceFit — Anonymous Coaching Challenges, Scored by Science" },
-      { name: "twitter:title", content: "ScienceFit — Anonymous Coaching Challenges, Scored by Science" },
-      { name: "description", content: "Athletes post a training request. Coaches compete anonymously. Every program is scored on seven evidence-based dimensions before a winner is delivered." },
-      { property: "og:description", content: "Athletes post a training request. Coaches compete anonymously. Every program is scored on seven evidence-based dimensions before a winner is delivered." },
-      { name: "twitter:description", content: "Athletes post a training request. Coaches compete anonymously. Every program is scored on seven evidence-based dimensions before a winner is delivered." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/fe91acbff5deb21a7c24412e35255045/id-preview-6c3c4894--9c2eb813-ee06-49a5-b9dc-8dcb7efcc306.lovable.app-1786156512100.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/fe91acbff5deb21a7c24412e35255045/id-preview-6c3c4894--9c2eb813-ee06-49a5-b9dc-8dcb7efcc306.lovable.app-1786156512100.png" },
+      {
+        property: "og:title",
+        content: "ScienceFit — Anonymous Coaching Challenges, Scored by Science",
+      },
+      {
+        name: "twitter:title",
+        content: "ScienceFit — Anonymous Coaching Challenges, Scored by Science",
+      },
+      {
+        name: "description",
+        content:
+          "Athletes post a training request. Coaches compete anonymously. Every program is scored on seven evidence-based dimensions before a winner is delivered.",
+      },
+      {
+        property: "og:description",
+        content:
+          "Athletes post a training request. Coaches compete anonymously. Every program is scored on seven evidence-based dimensions before a winner is delivered.",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Athletes post a training request. Coaches compete anonymously. Every program is scored on seven evidence-based dimensions before a winner is delivered.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/fe91acbff5deb21a7c24412e35255045/id-preview-6c3c4894--9c2eb813-ee06-49a5-b9dc-8dcb7efcc306.lovable.app-1786156512100.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/fe91acbff5deb21a7c24412e35255045/id-preview-6c3c4894--9c2eb813-ee06-49a5-b9dc-8dcb7efcc306.lovable.app-1786156512100.png",
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
