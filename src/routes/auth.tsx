@@ -7,9 +7,7 @@ import { useSession } from "@/hooks/useSession";
 import { authErrorMessage, safeRedirect } from "@/lib/auth-errors";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    redirect: typeof search["redirect"] === "string" ? (search["redirect"] as string) : undefined,
-  }),
+  validateSearch: z.object({ redirect: z.string().optional() }),
   head: () => ({
     meta: [
       { title: "Sign in — ScienceFit" },
