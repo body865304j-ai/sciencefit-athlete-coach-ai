@@ -153,24 +153,57 @@ function AuthPage() {
             ScienceFit
           </Link>
           <h1 className="mt-6 font-display text-3xl font-light text-foreground">
-            Confirm your email
+            Check your email
           </h1>
           <p className="mt-3 text-sm text-muted-foreground">
-            We sent a confirmation link to <span className="text-foreground">{pendingEmail}</span>.
-            Open it to activate your account, then sign in.
+            Your ScienceFit account has been created. A confirmation link was requested for{" "}
+            <span className="text-foreground">{maskEmail(pendingEmail)}</span>. Open it to activate
+            your account, then sign in.
           </p>
+          <p className="mt-3 text-xs text-warm-gray">
+            Nothing after a few minutes? Check spam, then request a new link below.
+          </p>
+
+          {resendError && (
+            <p
+              role="alert"
+              className="mt-5 rounded-md bg-destructive/10 px-4 py-3 text-sm text-destructive"
+            >
+              {resendError}
+            </p>
+          )}
+
           <button
             type="button"
             onClick={() => void resendConfirmation()}
-            disabled={busy}
+            disabled={busy || resendIn > 0}
             className="tap-target mt-8 w-full rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:bg-accent disabled:opacity-60"
           >
-            {busy ? "Sending…" : "Resend confirmation email"}
+            {busy
+              ? "Sending…"
+              : resendIn > 0
+                ? `Resend available in ${resendIn}s`
+                : "Resend confirmation email"}
           </button>
           <button
             type="button"
             onClick={() => {
               setPendingEmail(null);
+              setResendError(null);
+              setResendIn(0);
+              setMode("signup");
+              setPassword("");
+            }}
+            className="tap-target mt-4 w-full text-sm text-warm-gray underline-offset-4 hover:text-foreground hover:underline"
+          >
+            Use a different email
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setPendingEmail(null);
+              setResendError(null);
+              setResendIn(0);
               setMode("signin");
             }}
             className="tap-target mt-4 w-full text-sm text-warm-gray underline-offset-4 hover:text-foreground hover:underline"
