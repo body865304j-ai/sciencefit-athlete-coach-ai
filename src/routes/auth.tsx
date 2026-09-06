@@ -31,6 +31,14 @@ const credentials = z.object({
   password: z.string().min(8, "Use at least 8 characters.").max(128),
 });
 
+/** Masks the local part so the address is recognisable but not fully exposed. */
+function maskEmail(value: string): string {
+  const [local = "", domain = ""] = value.split("@");
+  if (!domain) return value;
+  const shown = local.slice(0, 2);
+  return `${shown}${"•".repeat(Math.max(local.length - 2, 1))}@${domain}`;
+}
+
 function AuthPage() {
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
@@ -38,6 +46,8 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [pendingEmail, setPendingEmail] = useState<string | null>(null);
+  const [resendIn, setResendIn] = useState(0);
+  const [resendError, setResendError] = useState<string | null>(null);
   const { session, loading } = useSession();
   const navigate = useNavigate();
   const search = Route.useSearch();
@@ -48,6 +58,13 @@ function AuthPage() {
   useEffect(() => {
     if (!loading && session) void navigate({ to: destination, replace: true });
   }, [loading, session, navigate, destination]);
+
+  // Resend cooldown — keeps users from hammering the auth email endpoint.
+  useEffect(() => {
+    if (resendIn <= 0) return;
+    const timer = setTimeout(() => setResendIn((value) => value - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [resendIn]);
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -86,14 +103,18 @@ function AuthPage() {
   }
 
   async function resendConfirmation() {
-    if (!pendingEmail) return;
+    if (!pendingEmail || resendIn > 0) return;
     setBusy(true);
+    setResendError(null);
     try {
       const { error } = await supabase.auth.resend({ type: "signup", email: pendingEmail });
       if (error) throw error;
-      toast.success("Confirmation email sent again.");
+      // Only claim a send once Supabase accepted the request.
+      toast.success("Confirmation email requested again.");
+      setResendIn(60);
     } catch (error) {
-      toast.error(authErrorMessage(error));
+      setResendError(authErrorMessage(error));
+      setResendIn(30);
     } finally {
       setBusy(false);
     }
@@ -140,24 +161,57 @@ function AuthPage() {
             ScienceFit
           </Link>
           <h1 className="mt-6 font-display text-3xl font-light text-foreground">
-            Confirm your email
+            Check your email
           </h1>
           <p className="mt-3 text-sm text-muted-foreground">
-            We sent a confirmation link to <span className="text-foreground">{pendingEmail}</span>.
-            Open it to activate your account, then sign in.
+            Your ScienceFit account has been created. A confirmation link was requested for{" "}
+            <span className="text-foreground">{maskEmail(pendingEmail)}</span>. Open it to activate
+            your account, then sign in.
           </p>
+          <p className="mt-3 text-xs text-warm-gray">
+            Nothing after a few minutes? Check spam, then request a new link below.
+          </p>
+
+          {resendError && (
+            <p
+              role="alert"
+              className="mt-5 rounded-md bg-destructive/10 px-4 py-3 text-sm text-destructive"
+            >
+              {resendError}
+            </p>
+          )}
+
           <button
             type="button"
             onClick={() => void resendConfirmation()}
-            disabled={busy}
+            disabled={busy || resendIn > 0}
             className="tap-target mt-8 w-full rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:bg-accent disabled:opacity-60"
           >
-            {busy ? "Sending…" : "Resend confirmation email"}
+            {busy
+              ? "Sending…"
+              : resendIn > 0
+                ? `Resend available in ${resendIn}s`
+                : "Resend confirmation email"}
           </button>
           <button
             type="button"
             onClick={() => {
               setPendingEmail(null);
+              setResendError(null);
+              setResendIn(0);
+              setMode("signup");
+              setPassword("");
+            }}
+            className="tap-target mt-4 w-full text-sm text-warm-gray underline-offset-4 hover:text-foreground hover:underline"
+          >
+            Use a different email
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setPendingEmail(null);
+              setResendError(null);
+              setResendIn(0);
               setMode("signin");
             }}
             className="tap-target mt-4 w-full text-sm text-warm-gray underline-offset-4 hover:text-foreground hover:underline"
