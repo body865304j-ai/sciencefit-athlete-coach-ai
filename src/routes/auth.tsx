@@ -38,6 +38,8 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [pendingEmail, setPendingEmail] = useState<string | null>(null);
+  const [resendIn, setResendIn] = useState(0);
+  const [resendError, setResendError] = useState<string | null>(null);
   const { session, loading } = useSession();
   const navigate = useNavigate();
   const search = Route.useSearch();
