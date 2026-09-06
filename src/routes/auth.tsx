@@ -51,6 +51,13 @@ function AuthPage() {
     if (!loading && session) void navigate({ to: destination, replace: true });
   }, [loading, session, navigate, destination]);
 
+  // Resend cooldown — keeps users from hammering the auth email endpoint.
+  useEffect(() => {
+    if (resendIn <= 0) return;
+    const timer = setTimeout(() => setResendIn((value) => value - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [resendIn]);
+
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
     setFormError(null);
