@@ -88,14 +88,18 @@ function AuthPage() {
   }
 
   async function resendConfirmation() {
-    if (!pendingEmail) return;
+    if (!pendingEmail || resendIn > 0) return;
     setBusy(true);
+    setResendError(null);
     try {
       const { error } = await supabase.auth.resend({ type: "signup", email: pendingEmail });
       if (error) throw error;
-      toast.success("Confirmation email sent again.");
+      // Only claim a send once Supabase accepted the request.
+      toast.success("Confirmation email requested again.");
+      setResendIn(60);
     } catch (error) {
-      toast.error(authErrorMessage(error));
+      setResendError(authErrorMessage(error));
+      setResendIn(30);
     } finally {
       setBusy(false);
     }
