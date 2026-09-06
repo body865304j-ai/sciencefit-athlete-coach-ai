@@ -31,6 +31,14 @@ const credentials = z.object({
   password: z.string().min(8, "Use at least 8 characters.").max(128),
 });
 
+/** Masks the local part so the address is recognisable but not fully exposed. */
+function maskEmail(value: string): string {
+  const [local = "", domain = ""] = value.split("@");
+  if (!domain) return value;
+  const shown = local.slice(0, 2);
+  return `${shown}${"•".repeat(Math.max(local.length - 2, 1))}@${domain}`;
+}
+
 function AuthPage() {
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
